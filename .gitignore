@@ -1,0 +1,116 @@
+# ============================================================
+# AI POC验证与技术决策智能体 - 公开仓库 .gitignore
+# 原则：任何凭据、内部证据、本机隐私信息，一律不得进入版本库。
+# ============================================================
+
+# ---------- 环境变量与凭据文件 ----------
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.secret
+*.secrets
+secrets/
+credentials/
+credential/
+*.credential
+*token.json
+*_token.txt
+service-account*.json
+
+# ---------- 评测内部证据（绝不公开） ----------
+private_gold/
+private-gold/
+golden/
+golden_evidence/
+*private_gold*
+*golden_internal*
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+venv/
+.venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+
+# ---------- Node ----------
+node_modules/
+.npm/
+.pnpm-store/
+yarn-error.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ---------- IDE / 编辑器 ----------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.sublime-workspace
+
+# ---------- 操作系统 ----------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+._*
+
+# ---------- 临时日志 ----------
+*.log
+logs/
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
+crash-*.txt
+debug-*.txt
+
+# ---------- 运行时缓存 ----------
+.cache/
+cache/
+runtime_cache/
+.temp/
+tmp/
+*.pid
+*.seed
+
+# ---------- 本地 artifacts ----------
+artifacts/
+local_artifacts/
+run_artifacts/
+outputs/
+runs/
+*.sqlite
+*.sqlite3
+*.db
+
+# ---------- 导出物 / 执行记录 ----------
+exports/
+*.trace
+*.har
+trace.json
+raw_envelope*.json
+*raw-response*

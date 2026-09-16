@@ -1,0 +1,24 @@
+# 统一换行符，避免 Windows / macOS 协作产生整文件 diff 噪声
+* text=auto eol=lf
+
+# 明确声明为二进制，不做换行转换
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.zip  binary
+*.pptx binary
+*.docx binary
+*.xlsx binary
+*.mp4  binary
+
+# Windows 批处理需要 CRLF
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+
+# 语言识别
+*.md   text
+*.yml  text
+*.yaml text

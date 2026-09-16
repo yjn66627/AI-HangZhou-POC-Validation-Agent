@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 公开边界政策 / Publication Policy
+    url: https://github.com/yjn66627/AI-HangZhou-POC-Validation-Agent/blob/main/docs/PUBLICATION_POLICY.md
+    about: 提交 Issue 前请先确认内容不含凭据、内部证据与本机路径。
