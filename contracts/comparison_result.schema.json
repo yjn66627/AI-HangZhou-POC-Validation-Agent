@@ -1,0 +1,520 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-hangzhou.local/contracts/comparison_result.schema.json",
+  "title": "候选横向比较结果 v1.4",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "comparison_id",
+    "case_id",
+    "candidate_summaries",
+    "recommended_candidate_id",
+    "recommendation",
+    "rationale",
+    "eligibility_rules",
+    "eligible_candidates",
+    "ineligible_candidates",
+    "ranking_reason",
+    "cost_comparison",
+    "latency_comparison",
+    "quality_comparison",
+    "evidence_comparison",
+    "safety_summary",
+    "decision_summary",
+    "generated_at",
+    "cost_comparison_status",
+    "cost_comparison_currency"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.4"
+    },
+    "comparison_id": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "candidate_summaries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "repeat_count",
+          "pass_rate",
+          "quality_mean",
+          "quality_std",
+          "failure_rate",
+          "evidence_sufficiency_rate",
+          "latency_mean_ms",
+          "latency_p95_ms",
+          "cost_mean",
+          "cost_total",
+          "cost_currency",
+          "tool_error_count",
+          "safety_block_count",
+          "latency_available_rate",
+          "cost_available_rate",
+          "timeout_rate",
+          "human_review_count",
+          "safety_violation_count",
+          "mandatory_escalation_count",
+          "terminal_failure_count",
+          "execution_plan_violation_count",
+          "decision_counts",
+          "eligible",
+          "ineligibility_reasons"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string"
+          },
+          "repeat_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pass_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "quality_mean": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "quality_std": {
+            "type": "number",
+            "minimum": 0
+          },
+          "failure_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "evidence_sufficiency_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "latency_mean_ms": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "latency_p95_ms": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "cost_mean": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "cost_total": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "cost_currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "tool_error_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "safety_block_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "latency_available_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "cost_available_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "timeout_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "human_review_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "safety_violation_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "decision_counts": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "eligible": {
+            "type": "boolean"
+          },
+          "ineligibility_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "mandatory_escalation_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "terminal_failure_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "execution_plan_violation_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "recommended_candidate_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "recommendation": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "eligibility_rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "minimum_pass_rate",
+        "maximum_failure_rate",
+        "maximum_timeout_rate",
+        "minimum_evidence_sufficiency_rate",
+        "allow_human_review",
+        "base_currency",
+        "fx_rates"
+      ],
+      "properties": {
+        "minimum_pass_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "maximum_failure_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "minimum_evidence_sufficiency_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "allow_human_review": {
+          "type": "boolean"
+        },
+        "maximum_timeout_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "base_currency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fx_rates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        }
+      }
+    },
+    "eligible_candidates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "ineligible_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "reasons"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string"
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "ranking_reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cost_comparison": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "mean",
+          "currency",
+          "available_rate",
+          "normalized_mean",
+          "comparison_currency",
+          "comparable"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string"
+          },
+          "mean": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "available_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "normalized_mean": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "comparison_currency": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "comparable": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "latency_comparison": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "mean_ms",
+          "p95_ms",
+          "available_rate"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string"
+          },
+          "mean_ms": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "p95_ms": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "available_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "quality_comparison": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "mean",
+          "std",
+          "pass_rate"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string"
+          },
+          "mean": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "std": {
+            "type": "number",
+            "minimum": 0
+          },
+          "pass_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "evidence_comparison": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "sufficiency_rate"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string"
+          },
+          "sufficiency_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "safety_summary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "safety_violation_count",
+          "safety_block_count",
+          "human_review_count",
+          "mandatory_escalation_count",
+          "terminal_failure_count",
+          "execution_plan_violation_count"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string"
+          },
+          "safety_violation_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "safety_block_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "human_review_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "mandatory_escalation_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "terminal_failure_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "execution_plan_violation_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "decision_summary": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "cost_comparison_status": {
+      "type": "string",
+      "enum": [
+        "SAME_CURRENCY",
+        "STATIC_FX",
+        "COST_NOT_COMPARABLE",
+        "NOT_AVAILABLE"
+      ]
+    },
+    "cost_comparison_currency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

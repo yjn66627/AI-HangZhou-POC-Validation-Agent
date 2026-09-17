@@ -109,14 +109,11 @@ Comparison          跨 Case、跨版本横向比较
 
 ---
 
-## 五、当前阶段说明：文档优先
+## 五、当前阶段说明：冻结基线已同步
 
-本仓库第一版采用 `DOCUMENTATION_FIRST`。
+本仓库已同步当前正式冻结基线 `POST_C1D_PRE_REAL_TOOL_WINDOWS_BASELINE` 的可公开源码、Contract、测试与必要配置模板。
 
-当前核心工程由另一条并行工作线推进中，源码仍在演进。
-因此本轮**只**建立仓库骨架与公开文档，**不迁移**正式后端 / 网关 / 评估器 / 决策引擎 / Runtime 源码。
-
-等当前工程阶段正式冻结后，再单独执行 `SOURCE_PUBLICATION_REVIEW` 与 `PUBLIC_SOURCE_MIGRATION`。
+同步内容不包含 Private Gold、内部原始证据、真实凭据或机器专用文件。并行开发中的 Project-native Real Tool Adapter（D1）仍处于独立开发 / 审查流程，不属于本次正式团队基线。
 
 ---
 

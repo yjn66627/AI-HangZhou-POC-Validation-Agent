@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-poc.local/contracts/executor-agent-output-v1.json",
+  "title": "EXECUTOR_AGENT_OUTPUT_CONTRACT",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status", "final_action", "diagnosis_code", "response", "confidence",
+    "root_cause", "handoff_type", "guardrail_blocked", "guardrail_triggered",
+    "root_cause_evidence_refs", "checks", "candidate_reported_task_success",
+    "candidate_reported_score", "metric_breakdown", "evidence"
+  ],
+  "properties": {
+    "status": {"type": "string", "enum": ["SUCCESS", "PARTIAL", "FAILED", "BLOCKED"]},
+    "final_action": {"type": "string", "enum": ["ANSWER", "CLARIFY", "HANDOFF", "REFUSE"]},
+    "diagnosis_code": {"type": "string", "minLength": 1},
+    "response": {"type": "string"},
+    "confidence": {"type": "string", "enum": ["LOW", "MEDIUM", "HIGH"]},
+    "root_cause": {"type": ["string", "null"]},
+    "handoff_type": {"type": ["string", "null"], "enum": ["POLICY", "RUNTIME", "QUALITY", "EVIDENCE", null]},
+    "guardrail_blocked": {"type": "boolean"},
+    "guardrail_triggered": {"type": "boolean"},
+    "root_cause_evidence_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "checks": {"type": "object", "additionalProperties": {"type": ["boolean", "number", "string", "null"]}},
+    "candidate_reported_task_success": {"type": ["boolean", "null"]},
+    "candidate_reported_score": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "metric_breakdown": {"type": "object", "additionalProperties": {"type": "number"}},
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["evidence_id", "source_ref", "claim", "support_level", "claim_ids", "target"],
+        "properties": {
+          "evidence_id": {"type": "string", "minLength": 1},
+          "source_ref": {"type": "string", "minLength": 1},
+          "claim": {"type": "string", "minLength": 1},
+          "support_level": {"type": "string", "enum": ["SUPPORTS", "CONTRADICTS", "CONTEXT_ONLY"]},
+          "claim_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "target": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}

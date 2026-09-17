@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-hangzhou.local/contracts/task_input.schema.json",
+  "title": "平台无关任务输入 v2.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "task_id",
+    "case_id",
+    "user_query",
+    "visible_context",
+    "available_docs",
+    "available_tools",
+    "safety_constraints",
+    "metadata"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "2.1"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "user_query": {
+      "type": "string",
+      "minLength": 1
+    },
+    "visible_context": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "available_docs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "available_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "safety_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allow_write_operations",
+        "require_evidence_for_dynamic_claims",
+        "prohibited_operations"
+      ],
+      "properties": {
+        "allow_write_operations": {
+          "type": "boolean"
+        },
+        "require_evidence_for_dynamic_claims": {
+          "type": "boolean"
+        },
+        "prohibited_operations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "business_constraints": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source_dataset": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "platform_hint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  }
+}

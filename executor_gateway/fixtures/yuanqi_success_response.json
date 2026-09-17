@@ -1,0 +1,49 @@
+{
+  "id": "yuanqi-response-001",
+  "created": 1789370000,
+  "choices": [
+    {
+      "index": 0,
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "{\"status\": \"SUCCESS\", \"final_action\": \"ANSWER\", \"diagnosis_code\": \"TASK_COMPLETED\", \"response\": \"受控执行完成。\", \"confidence\": \"HIGH\", \"root_cause\": null, \"handoff_type\": null, \"guardrail_blocked\": false, \"guardrail_triggered\": false, \"root_cause_evidence_refs\": [\"ev-real-1\"], \"checks\": {\"executor_contract\": true}, \"candidate_reported_task_success\": true, \"candidate_reported_score\": 0.9, \"metric_breakdown\": {\"semantic_completion\": 1.0}, \"evidence\": [{\"evidence_id\": \"ev-real-1\", \"source_ref\": \"call-real-1\", \"claim\": \"制度上下文已检索到\", \"support_level\": \"SUPPORTS\", \"claim_ids\": [\"claim-1\"], \"target\": \"制度A\"}]}",
+        "steps": [
+          {
+            "role": "assistant",
+            "content": "",
+            "time_cost": 30,
+            "tool_calls": [
+              {
+                "id": "call-real-1",
+                "type": "function",
+                "function": {
+                  "name": "retrieve_context",
+                  "arguments": "{\"query\": \"制度A\"}"
+                }
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "tool_call_id": "call-real-1",
+            "content": "{\"matched\": 2, \"items\": [\"制度A\", \"制度B\"]}",
+            "time_cost": 15
+          },
+          {
+            "role": "assistant",
+            "content": "完成",
+            "time_cost": 20,
+            "tool_calls": []
+          }
+        ]
+      }
+    }
+  ],
+  "assistant_id": "<PLACEHOLDER_ASSISTANT_ID>",
+  "usage": {
+    "prompt_tokens": 11,
+    "completion_tokens": 7,
+    "total_tokens": 18
+  }
+}

@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-hangzhou.local/contracts/evaluation_contract.schema.json",
+  "title": "统一评估契约 EvaluationContract v1.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "case_id",
+    "source",
+    "frozen_at",
+    "allowed_actions",
+    "accepted_diagnoses",
+    "required_tools",
+    "allowed_tools",
+    "forbidden_tools",
+    "evidence_required",
+    "should_escalate",
+    "guardrail_required",
+    "root_cause_must_be_evidenced",
+    "required_response_keywords",
+    "required_checks",
+    "forbidden_claims",
+    "evidence_requirements",
+    "tool_policy_mode",
+    "decision_criteria",
+    "safety_policy",
+    "business_constraints"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.2"
+    },
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "PRIVATE_GOLD",
+        "LIVE_ACCEPTANCE_CONTRACT"
+      ]
+    },
+    "frozen_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "allowed_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ANSWER",
+          "CLARIFY",
+          "HANDOFF",
+          "REFUSE"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "accepted_diagnoses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "required_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "allowed_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "forbidden_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "evidence_required": {
+      "type": "boolean"
+    },
+    "should_escalate": {
+      "type": "boolean"
+    },
+    "guardrail_required": {
+      "type": "boolean"
+    },
+    "root_cause_must_be_evidenced": {
+      "type": "boolean"
+    },
+    "required_response_keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "required_checks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "boolean",
+          "number",
+          "string",
+          "null"
+        ]
+      }
+    },
+    "forbidden_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "evidence_requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required_types",
+        "required_claim_ids",
+        "required_targets",
+        "require_tool_link",
+        "require_action_result"
+      ],
+      "properties": {
+        "required_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "required_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "required_targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "require_tool_link": {
+          "type": "boolean"
+        },
+        "require_action_result": {
+          "type": "boolean"
+        }
+      }
+    },
+    "expected_evidence_sufficient": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tool_policy_mode": {
+      "type": "string",
+      "enum": [
+        "UNRESTRICTED",
+        "NONE_ALLOWED",
+        "ALLOWLIST"
+      ]
+    },
+    "decision_criteria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "quality",
+        "cost",
+        "latency"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "USER_CONFIRMED",
+            "BUSINESS_CONFIRMED",
+            "BENCHMARK_PRIVATE_GOLD",
+            "SYSTEM_TEMPLATE",
+            "DEMO_DEFAULT",
+            "TEMPLATE_ONLY",
+            "NOT_PROVIDED"
+          ]
+        },
+        "quality": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "min_score"
+          ],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "REQUIRED",
+                "NOT_PROVIDED",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "min_score": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "cost": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "max_value",
+            "currency"
+          ],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "REQUIRED",
+                "NOT_PROVIDED",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "max_value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "currency": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "latency": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "max_ms"
+          ],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "REQUIRED",
+                "NOT_PROVIDED",
+                "NOT_APPLICABLE"
+              ]
+            },
+            "max_ms": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "safety_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allow_write_operations",
+        "require_evidence_for_dynamic_claims",
+        "prohibited_operations"
+      ],
+      "properties": {
+        "allow_write_operations": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "require_evidence_for_dynamic_claims": {
+          "type": "boolean"
+        },
+        "prohibited_operations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "business_constraints": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "合并后的业务约束：保留原始task/experiment，并分类为supported、informational_only、unsupported_mandatory；未知强制约束不得静默忽略。"
+    }
+  }
+}

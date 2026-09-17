@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-hangzhou.local/contracts/experiment_spec.schema.json",
+  "title": "平台无关实验规格 v2.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "experiment_id",
+    "task_id",
+    "case_id",
+    "candidate_id",
+    "execution_mode",
+    "objective",
+    "success_criteria",
+    "required_tools",
+    "prohibited_tools",
+    "simulation",
+    "business_constraints",
+    "repeats"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "2.1"
+    },
+    "experiment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "execution_mode": {
+      "type": "string",
+      "enum": [
+        "FIXTURE",
+        "MOCK",
+        "CONTROLLED_FAULT",
+        "LIVE"
+      ]
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "success_criteria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "min_quality_score",
+        "max_latency_ms",
+        "max_cost",
+        "cost_currency",
+        "require_tool_trace",
+        "require_evidence",
+        "max_error_count"
+      ],
+      "properties": {
+        "min_quality_score": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "max_latency_ms": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "max_cost": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "cost_currency": {
+          "type": "string",
+          "minLength": 1
+        },
+        "require_tool_trace": {
+          "type": "boolean"
+        },
+        "require_evidence": {
+          "type": "boolean"
+        },
+        "max_error_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "required_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "prohibited_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "simulation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile"
+      ],
+      "properties": {
+        "profile": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "NORMAL_SUCCESS",
+            "QUALITY_LOW",
+            "TOOL_TIMEOUT",
+            "EVIDENCE_MISSING",
+            "HIGH_RISK_PERMISSION",
+            "PARTIAL_OUTPUT",
+            "METRICS_MISSING",
+            "SAFE_GUARDRAIL_REFUSAL",
+            null
+          ]
+        },
+        "seed": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    },
+    "business_constraints": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "repeats": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 1
+    },
+    "created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  }
+}

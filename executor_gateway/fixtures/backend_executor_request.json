@@ -1,0 +1,109 @@
+{
+  "run_id": "offline-run-001",
+  "task": {
+    "schema_version": "2.1",
+    "task_id": "task-fx-success",
+    "case_id": "FX-SUCCESS",
+    "user_query": "执行正常成功受控实验。",
+    "visible_context": {
+      "scenario": "正常成功"
+    },
+    "available_docs": [
+      "doc-policy-v1"
+    ],
+    "available_tools": [
+      "retrieve_context"
+    ],
+    "safety_constraints": {
+      "allow_write_operations": false,
+      "require_evidence_for_dynamic_claims": true,
+      "prohibited_operations": [
+        "unauthorized_write",
+        "bypass_permission"
+      ]
+    },
+    "business_constraints": {
+      "min_quality_score": 0.8,
+      "max_latency_ms": 3000,
+      "max_cost": 0.05,
+      "cost_currency": "CNY"
+    },
+    "metadata": {
+      "source_dataset": "fixture",
+      "source_ref": "FX-SUCCESS",
+      "platform_hint": null,
+      "notes": "SANDBOX_FIXTURE_ONLY"
+    },
+    "created_at": null
+  },
+  "candidate": {
+    "schema_version": "2.1",
+    "candidate_id": "cand-fx-success",
+    "task_id": "task-fx-success",
+    "case_id": "FX-SUCCESS",
+    "name": "固定工具工作流基线",
+    "approach_type": "FIXED_TOOL_WORKFLOW",
+    "summary": "用固定工具顺序执行并保留可追溯证据。",
+    "model_provider": null,
+    "model_name": null,
+    "tools": [
+      "retrieve_context"
+    ],
+    "assumptions": [
+      "工具接口按契约返回"
+    ],
+    "expected_strengths": [
+      "可复现",
+      "易审计"
+    ],
+    "expected_risks": [
+      "外部工具可能失败"
+    ],
+    "estimated": {
+      "quality_score": 0.8,
+      "latency_ms": 3000,
+      "cost": 0.05,
+      "cost_currency": "CNY"
+    },
+    "metadata": {
+      "source_dataset": "fixture",
+      "source_ref": "FX-SUCCESS",
+      "platform_hint": null,
+      "notes": "SANDBOX_FIXTURE_ONLY"
+    }
+  },
+  "experiment_spec": {
+    "schema_version": "2.1",
+    "experiment_id": "exp-fx-success",
+    "task_id": "task-fx-success",
+    "case_id": "FX-SUCCESS",
+    "candidate_id": "cand-fx-success",
+    "execution_mode": "LIVE",
+    "objective": "验证正常成功场景下的质量、延迟、成本、失败证据与安全行为。",
+    "success_criteria": {
+      "min_quality_score": 0.8,
+      "max_latency_ms": 3000,
+      "max_cost": 0.05,
+      "cost_currency": "CNY",
+      "require_tool_trace": true,
+      "require_evidence": true,
+      "max_error_count": 0
+    },
+    "required_tools": [
+      "retrieve_context"
+    ],
+    "prohibited_tools": [
+      "write_resource",
+      "bypass_permission"
+    ],
+    "simulation": {
+      "profile": null,
+      "seed": 20260912
+    },
+    "business_constraints": {
+      "human_fallback_available": true
+    },
+    "repeats": 1,
+    "created_at": null
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "yuanqi-response-001",
+  "created": 1789370000,
+  "choices": [
+    {
+      "index": 0,
+      "finish_reason": "tool_fail",
+      "message": {
+        "role": "assistant",
+        "content": "not-used",
+        "steps": [
+          {
+            "role": "assistant",
+            "content": "",
+            "time_cost": 30,
+            "tool_calls": [
+              {
+                "id": "call-real-1",
+                "type": "function",
+                "function": {
+                  "name": "retrieve_context",
+                  "arguments": "{\"query\": \"制度A\"}"
+                }
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "tool_call_id": "call-real-1",
+            "content": "{\"matched\": 2, \"items\": [\"制度A\", \"制度B\"]}",
+            "time_cost": 15
+          },
+          {
+            "role": "assistant",
+            "content": "完成",
+            "time_cost": 20,
+            "tool_calls": []
+          }
+        ]
+      }
+    }
+  ],
+  "assistant_id": "<PLACEHOLDER_ASSISTANT_ID>",
+  "usage": {
+    "prompt_tokens": 11,
+    "completion_tokens": 7,
+    "total_tokens": 18
+  }
+}

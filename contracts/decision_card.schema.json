@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-hangzhou.local/contracts/decision_card.schema.json",
+  "title": "平台无关决策卡 v2.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_id",
+    "run_id",
+    "case_id",
+    "candidate_id",
+    "experiment_id",
+    "decision",
+    "risk_level",
+    "headline",
+    "recommendation",
+    "rationale",
+    "evidence_refs",
+    "next_steps",
+    "blockers",
+    "display",
+    "created_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "2.1"
+    },
+    "decision_id": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "candidate_id": {
+      "type": "string"
+    },
+    "experiment_id": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "SUPPORT_CONTROLLED_TRIAL",
+        "HUMAN_ASSISTED",
+        "DEFER",
+        "INSUFFICIENT_EVIDENCE",
+        "BLOCKED_BY_SAFETY"
+      ]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    "headline": {
+      "type": "string"
+    },
+    "recommendation": {
+      "type": "string"
+    },
+    "rationale": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "next_steps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "display": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "badge",
+        "label",
+        "show_human_review",
+        "show_evidence"
+      ],
+      "properties": {
+        "badge": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "show_human_review": {
+          "type": "boolean"
+        },
+        "show_evidence": {
+          "type": "boolean"
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

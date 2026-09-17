@@ -1,0 +1,86 @@
+{
+  "dataset_version": "1.2-20260916",
+  "usage": "EXECUTOR_VISIBLE_FORMAL_INPUT",
+  "cases": [
+    {
+      "case_id": "TEST-R2",
+      "user_query": "知识库中明确存在目标短语，但调整检索模式、权重、TopK（返回结果数量上限）和阈值后仍无法召回对应分段。请判断下一步应该怎么做。",
+      "known_context": "目标短语已在知识库分段中确认存在；多种检索参数调整后仍未召回目标分段。",
+      "allowed_tools": [
+        "分段读取",
+        "检索探针",
+        "索引/向量嵌入（Embedding）配置读取",
+        "版本信息读取。"
+      ],
+      "source_platform": "Dify（历史来源）",
+      "migration_class": "B",
+      "usage": "FORMAL_TEST_INPUT_ONLY"
+    },
+    {
+      "case_id": "TEST-R3",
+      "user_query": "同一个输入和知识库配置，在知识库检索测试中能检索到结果，但对话流（Chatflow）的知识检索节点返回空。请判断应如何定位。",
+      "known_context": "知识库测试有结果；对话流知识检索节点为空；表面上知识库与查询相同。",
+      "allowed_tools": [
+        "知识库测试结果",
+        "对话流节点配置读取",
+        "工作流版本/输入读取",
+        "工具调用轨迹。"
+      ],
+      "source_platform": "Dify（历史来源）",
+      "migration_class": "B",
+      "usage": "FORMAL_TEST_INPUT_ONLY"
+    },
+    {
+      "case_id": "TEST-I2",
+      "user_query": "上传文档后，索引状态轮询持续返回HTTP 404（资源未找到），索引无法正常完成。请判断应如何处理。",
+      "known_context": "文档上传动作已发生；索引状态轮询404；没有可靠的完成状态。",
+      "allowed_tools": [
+        "文档列表",
+        "索引状态接口",
+        "HTTP响应",
+        "批次/文档标识读取。"
+      ],
+      "source_platform": "Dify（历史来源）",
+      "migration_class": "B",
+      "usage": "FORMAL_TEST_INPUT_ONLY"
+    },
+    {
+      "case_id": "TEST-A2",
+      "user_query": "团队成员访问由其他成员创建的知识库/应用时返回HTTP 403。请判断问题并给出安全的下一步。",
+      "known_context": "资源真实存在；创建者可以访问；当前团队成员访问403；公开Issue报告过基于角色的访问控制（RBAC）初始化不一致现象。",
+      "allowed_tools": [
+        "当前用户角色读取",
+        "资源所有者/权限读取",
+        "HTTP响应",
+        "只读审计信息。"
+      ],
+      "source_platform": "Dify（历史来源）",
+      "migration_class": "B",
+      "usage": "FORMAL_TEST_INPUT_ONLY"
+    },
+    {
+      "case_id": "TEST-V2",
+      "user_query": "Dify升级后，使用手工元数据过滤（Metadata Filtering）的知识检索节点开始失败，错误涉及元数据模型配置字段（metadata_model_config）。请判断如何验证。",
+      "known_context": "升级前节点可运行；升级后失败；节点使用手工元数据过滤；出现元数据模型配置字段相关错误。",
+      "allowed_tools": [
+        "Dify版本",
+        "工作流/节点配置读取",
+        "版本发布说明/更新日志",
+        "错误日志",
+        "只读配置比较。"
+      ],
+      "source_platform": "Dify（历史来源）",
+      "migration_class": "C",
+      "usage": "FORMAL_TEST_INPUT_ONLY"
+    },
+    {
+      "case_id": "TEST-P1",
+      "user_query": "某企业完成了一轮AI POC。已知事实如下：①在冻结的200条静态业务样本上，端到端调用链200/200成功完成；②独立人工标注显示188/200条结果符合预期，质量得分为0.94，业务最低质量门槛为0.92；③平台只提供Token用量，未提供可核验的真实货币成本，而业务成本上限为平均每次不高于0.08元；④平台返回了time_cost字段，但其单位及其是否等同于业务端到端延迟尚未确认，业务延迟门槛为P95不高于3000ms；⑤尚未进行生产并发、峰值负载和长期稳定性验证。请仅基于这些已给事实做POC技术决策：判断哪些结论已经被证明、哪些仍未被证明，当前是否足以宣布整体Business Acceptance PASS或直接生产上线，以及下一步最小验证动作。请在checks中分别给出integration_proven、quality_threshold_met、cost_threshold_proven、latency_threshold_proven、full_business_acceptance_proven、additional_measurement_required六个布尔判断。",
+      "known_context": "题面已经包含完成判断所需的全部静态事实。本Case不依赖实时外部信息，不提供也不允许使用任何工具、数据库、知识库查询、API、浏览器或外部日志。",
+      "allowed_tools": [],
+      "source_platform": "AI POC验证（项目原生）",
+      "migration_class": "NATIVE",
+      "usage": "FORMAL_TEST_INPUT_ONLY"
+    }
+  ]
+}

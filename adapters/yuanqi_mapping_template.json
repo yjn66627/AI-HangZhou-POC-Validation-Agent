@@ -1,0 +1,11 @@
+{
+  "status": "TEMPLATE_NOT_LIVE_VERIFIED",
+  "说明": "以下字段路径只是联调模板，不代表腾讯元器官方真实返回JSON。真实联调时只修改映射，不修改已冻结的平台无关核心契约。",
+  "mapping": {
+    "requirement_path": "enterprise_requirement",
+    "candidates_path": "candidates",
+    "selected_candidate_id_path": "selected_candidate_id",
+    "experiment_params_path": "experiment_params",
+    "run_context_path": "run_context"
+  }
+}

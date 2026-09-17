@@ -1,0 +1,857 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-hangzhou.local/contracts/workflow_result.schema.json",
+  "title": "平台无关实验运行结果 v2.2",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "numberMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "availability",
+        "source",
+        "note"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "availability": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "NOT_PROVIDED",
+            "NOT_APPLICABLE",
+            "ESTIMATED"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "AVAILABLE",
+                  "ESTIMATED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "NOT_PROVIDED",
+                  "NOT_APPLICABLE"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "ESTIMATED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "note": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "integerMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "availability",
+        "source",
+        "note"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "availability": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "NOT_PROVIDED",
+            "NOT_APPLICABLE",
+            "ESTIMATED"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "AVAILABLE",
+                  "ESTIMATED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "NOT_PROVIDED",
+                  "NOT_APPLICABLE"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "ESTIMATED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "note": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "run_id",
+    "case_id",
+    "candidate_id",
+    "experiment_id",
+    "status",
+    "source",
+    "run_mode",
+    "output",
+    "quality_metrics",
+    "latency",
+    "cost",
+    "token_usage",
+    "tool_trace",
+    "errors",
+    "evidence",
+    "provenance",
+    "timestamps"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "2.2"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "experiment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "SUCCESS",
+        "PARTIAL",
+        "FAILED",
+        "CANCELLED",
+        "TIMEOUT",
+        "BLOCKED"
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "provider",
+        "adapter_id",
+        "reference",
+        "is_fixture",
+        "is_mock",
+        "fixture_reason"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "BACKEND",
+            "FIXTURE",
+            "MOCK",
+            "CONTROLLED_FAULT",
+            "LIVE_CAPTURE"
+          ]
+        },
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "adapter_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "is_fixture": {
+          "type": "boolean"
+        },
+        "is_mock": {
+          "type": "boolean"
+        },
+        "fixture_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "run_mode": {
+      "type": "string",
+      "enum": [
+        "FIXTURE",
+        "MOCK",
+        "CONTROLLED_FAULT",
+        "LIVE"
+      ]
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "final_action",
+        "diagnosis_code",
+        "response",
+        "root_cause",
+        "confidence",
+        "handoff_type",
+        "guardrail_blocked",
+        "root_cause_evidence_refs",
+        "guardrail_triggered",
+        "checks"
+      ],
+      "properties": {
+        "final_action": {
+          "type": "string",
+          "enum": [
+            "ANSWER",
+            "CLARIFY",
+            "HANDOFF",
+            "REFUSE"
+          ]
+        },
+        "diagnosis_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "response": {
+          "type": "string"
+        },
+        "root_cause": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH"
+          ]
+        },
+        "handoff_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "POLICY",
+            "RUNTIME",
+            "QUALITY",
+            "EVIDENCE",
+            null
+          ]
+        },
+        "guardrail_blocked": {
+          "type": "boolean"
+        },
+        "root_cause_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "guardrail_triggered": {
+          "type": "boolean"
+        },
+        "checks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "boolean",
+              "number",
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "quality_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_reported_task_success",
+        "candidate_reported_score",
+        "metric_breakdown"
+      ],
+      "properties": {
+        "candidate_reported_task_success": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "candidate_reported_score": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "metric_breakdown": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "latency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_ms",
+        "model_ms",
+        "tool_ms",
+        "queue_ms"
+      ],
+      "properties": {
+        "total_ms": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "model_ms": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "tool_ms": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "queue_ms": {
+          "$ref": "#/$defs/numberMetric"
+        }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "currency_availability",
+        "total",
+        "model",
+        "tool",
+        "other"
+      ],
+      "properties": {
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "currency_availability": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "NOT_PROVIDED",
+            "NOT_APPLICABLE",
+            "ESTIMATED"
+          ]
+        },
+        "total": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "model": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "tool": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "other": {
+          "$ref": "#/$defs/numberMetric"
+        }
+      }
+    },
+    "token_usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "total_tokens",
+        "cache_hit_tokens",
+        "cache_miss_tokens"
+      ],
+      "properties": {
+        "input_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        },
+        "output_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        },
+        "total_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        },
+        "cache_hit_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        },
+        "cache_miss_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        }
+      }
+    },
+    "tool_trace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tool_call_id",
+          "tool",
+          "status",
+          "arguments",
+          "result",
+          "error",
+          "latency_ms",
+          "retry_count",
+          "evidence_refs",
+          "unauthorized_attempt"
+        ],
+        "properties": {
+          "tool_call_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tool": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "ERROR",
+              "BLOCKED",
+              "SKIPPED"
+            ]
+          },
+          "arguments": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "result": {
+            "type": [
+              "object",
+              "array",
+              "string",
+              "number",
+              "boolean",
+              "null"
+            ]
+          },
+          "error": {
+            "type": [
+              "object",
+              "string",
+              "null"
+            ]
+          },
+          "latency_ms": {
+            "$ref": "#/$defs/numberMetric"
+          },
+          "retry_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "unauthorized_attempt": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "source",
+          "retriable"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "BACKEND",
+              "TOOL",
+              "RUNTIME",
+              "POLICY",
+              "ADAPTER",
+              "EXECUTOR"
+            ]
+          },
+          "retriable": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidence_id",
+          "evidence_type",
+          "claim",
+          "source_ref",
+          "support_level",
+          "content",
+          "claim_ids",
+          "target",
+          "action",
+          "result"
+        ],
+        "properties": {
+          "evidence_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_type": {
+            "type": "string",
+            "enum": [
+              "TOOL_OBSERVATION",
+              "DOCUMENT",
+              "METRIC",
+              "ERROR",
+              "POLICY",
+              "HUMAN_NOTE",
+              "OTHER"
+            ]
+          },
+          "claim": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "support_level": {
+            "type": "string",
+            "enum": [
+              "SUPPORTS",
+              "CONTRADICTS",
+              "CONTEXT_ONLY"
+            ]
+          },
+          "content": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "claim_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "target": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "action": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "result": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_id",
+        "producer",
+        "adapter_id",
+        "source_endpoint",
+        "captured_at",
+        "environment",
+        "raw_response_ref",
+        "executor_type",
+        "remote_execution_id"
+      ],
+      "properties": {
+        "execution_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "producer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adapter_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_endpoint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "captured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "environment": {
+          "type": "string",
+          "enum": [
+            "UNKNOWN",
+            "SANDBOX",
+            "LOCAL",
+            "STAGING",
+            "PRODUCTION"
+          ]
+        },
+        "raw_response_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "executor_type": {
+          "type": "string",
+          "enum": [
+            "FIXTURE_EXECUTOR",
+            "MOCK_EXECUTOR",
+            "CONTROLLED_FAULT_EXECUTOR",
+            "LIVE_EXECUTOR"
+          ]
+        },
+        "remote_execution_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "raw_response_source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "timestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "started_at",
+        "finished_at",
+        "remote_availability",
+        "received_at"
+      ],
+      "properties": {
+        "started_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "finished_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "remote_availability": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "NOT_PROVIDED",
+            "NOT_APPLICABLE",
+            "ESTIMATED"
+          ]
+        },
+        "received_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}
