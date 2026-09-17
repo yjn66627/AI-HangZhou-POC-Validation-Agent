@@ -1,0 +1,114 @@
+{
+  "demo_id": "DEMO-F",
+  "formal_case_id": null,
+  "freeze_version": "DEMO_FREEZE_v1.0",
+  "source_mode": "L1_REPLAY",
+  "case_status": "failed",
+  "title": "运行失败仍给出 Final",
+  "requirement": {
+    "goal": "演示工具调用或运行未完整成功时，系统仍能输出结构化 Final，而不是卡在半屏日志或假装成功。",
+    "constraints": [
+      "非 SUCCESS 之后不得继续发起 Tool Request",
+      "超时与 tool_fail 不按成功处理",
+      "必须给出可展示的 Decision 与下一步，而不是空白失败",
+      "本包是预置故障回放，不是真实事故现场"
+    ]
+  },
+  "candidate_solutions": [
+    {
+      "id": "A",
+      "name": "系统决策路径",
+      "summary": "运行未完整成功：保留人工辅助，输出 HUMAN_ASSISTED。",
+      "status": "failed",
+      "role": "system"
+    },
+    {
+      "id": "B",
+      "name": "错误外推 Baseline",
+      "summary": "把超时或 tool_fail 当成一次可忽略的小问题，继续给出乐观通过。",
+      "status": "completed",
+      "role": "naive_baseline"
+    }
+  ],
+  "experiment_progress": [
+    { "step": "需求解析", "status": "done" },
+    { "step": "对照实验", "status": "failed" },
+    { "step": "评估与决策", "status": "done" }
+  ],
+  "metrics": {
+    "quality": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED", "note": "运行未成功，质量分不可用" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED", "note": "反例路径会在失败后仍宣称可用；数据包不提供成功质量分" }
+    ],
+    "latency_ms": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED", "note": "本次以 TIMEOUT / tool_fail 终止" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED" }
+    ],
+    "cost_index": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED" }
+    ]
+  },
+  "evidence": [
+    {
+      "title": "运行未完整成功",
+      "summary": "对照实验步骤失败。公开级故障类型为工具失败或超时，不展示原始报文。",
+      "level": "strong",
+      "supports": "HUMAN_ASSISTED"
+    },
+    {
+      "title": "失败后进入 Final Only",
+      "summary": "非 SUCCESS 之后禁止继续 Tool Request，避免在失败链上叠加不可复核动作。",
+      "level": "strong",
+      "supports": "HUMAN_ASSISTED"
+    },
+    {
+      "title": "仍给出结构化 Final",
+      "summary": "Evaluator / Decision 继续产出 Decision Card：需人工辅助，而不是无结论退出。",
+      "level": "strong",
+      "supports": "HUMAN_ASSISTED"
+    }
+  ],
+  "decision": {
+    "result": "运行未完整成功，需人工辅助",
+    "code": "HUMAN_ASSISTED",
+    "risk_level": "MEDIUM",
+    "headline": "运行未完整成功：仅保留人工辅助",
+    "summary": "本次不能按完整成功处理。保留人工兜底，定位失败项后按同规格重试；在此之前不得输出受控试运行。",
+    "rationale": [
+      "运行状态不是 SUCCESS，不可按完整成功处理。",
+      "fail-closed：失败路径必须可见，不能被乐观通过覆盖。",
+      "错误外推 Baseline 会在 tool_fail 后继续宣称可用，这是演示要对比的反例。"
+    ],
+    "next_steps": [
+      "保留人工兜底",
+      "定位失败项（超时或工具失败）",
+      "按同规格重复实验，成功前不进入受控试用"
+    ],
+    "proven": [],
+    "unproven": ["run_success", "tool_path", "controlled_trial_eligibility"]
+  },
+  "warnings": [
+    "本页是产品化的失败态，不是调试控制台。",
+    "禁止把 HUMAN_ASSISTED 说成 SUPPORT_CONTROLLED_TRIAL。",
+    "3 分钟主线默认不进入本 Case；评委追问或 LIVE 故障时一键打开。"
+  ],
+  "ui_states": {
+    "running": {
+      "case_status": "running",
+      "experiment_progress": [
+        { "step": "需求解析", "status": "done" },
+        { "step": "对照实验", "status": "running" },
+        { "step": "评估与决策", "status": "pending" }
+      ],
+      "warnings": ["若长时间停在对照实验，按超时处理，不要无限等待。"]
+    },
+    "exception": {
+      "case_status": "failed",
+      "warnings": [
+        "Mock 缺 decision 字段时显示失败空态与人工辅助提示，页面不崩。",
+        "极端数字、空文本、屏幕缩放下失败页仍须可读。"
+      ]
+    }
+  }
+}

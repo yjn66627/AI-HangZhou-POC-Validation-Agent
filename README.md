@@ -5,7 +5,7 @@
 面向企业 AI POC 实验验证、自动评估与技术决策的智能体系统
 参赛项目：**AI杭州·超级智能体赛**
 
-在线体验：Coming Soon
+在线体验：本地 Demo 见 [`frontend/README.md`](frontend/README.md)（`http://127.0.0.1:5173`，预置回放，不是生产可用）
 
 ---
 
@@ -61,7 +61,9 @@ Comparison          跨 Case、跨版本横向比较
 | Decision | 全部 = `SUPPORT_CONTROLLED_TRIAL` |
 | Comparison eligible | true |
 | 当前阶段 | 进入真实 Tool 验证阶段 |
-| UI / Demo 封装 | 尚未完成 |
+| Demo 技术冻结 | `v1.0` 设计已定 |
+| 路演前端 | Mock/Replay 可 `npm run dev`，不是 Tool LIVE |
+| UI / Demo 封装 | 路演控制台已冻结；RealApiAdapter 未完成 |
 
 > ## 重要：`SUPPORT_CONTROLLED_TRIAL` ≠ Production Ready
 >
@@ -87,6 +89,12 @@ Comparison          跨 Case、跨版本横向比较
 | [`docs/cases/TEST-P1.md`](docs/cases/TEST-P1.md) | 核心 Case：区分"已证明"与"未证明" |
 | [`docs/cases/TEST-R3.md`](docs/cases/TEST-R3.md) | 知识库检索异常 Case，首个 Tool 验证候选 |
 | [`docs/live/LIVE1R_PUBLIC_SUMMARY.md`](docs/live/LIVE1R_PUBLIC_SUMMARY.md) | LIVE-1R 脱敏公开摘要 |
+| [`docs/demo/DEMO_FREEZE.md`](docs/demo/DEMO_FREEZE.md) | Demo 技术冻结契约 |
+| [`docs/delivery/DELIVERY_FREEZE.md`](docs/delivery/DELIVERY_FREEZE.md) | ⑫ 路演交付冻结（UI / 材料 / 演示 / 提交） |
+| [`frontend/`](frontend/README.md) | 实验控制台（npm 启动，默认预置回放） |
+| [`demo_cases/`](demo_cases/README.md) | 冻结演示 Case 数据包 |
+| [`demo_scripts/`](demo_scripts/README.md) | 3/5 分钟脚本、兜底口播、评委 FAQ |
+| [`presentation_assets/`](presentation_assets/README.md) | 路演 PPT 文案与架构节点 |
 | [`docs/team/TEAM_ROLES.md`](docs/team/TEAM_ROLES.md) | 团队分工 |
 | [`docs/PUBLICATION_POLICY.md`](docs/PUBLICATION_POLICY.md) | 公开边界：什么能公开，什么永远不能 |
 | [`public_artifacts/`](public_artifacts/README.md) | 可公开资产（架构图、Demo、UI 素材） |

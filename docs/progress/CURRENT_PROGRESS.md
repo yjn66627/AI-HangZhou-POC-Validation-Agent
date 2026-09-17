@@ -38,7 +38,10 @@ P1.4 Tool 验证
 FIRST TOOL LIVE
    |
    v
-UI / Demo
+Demo 技术冻结（设计已定，产物待审）
+   |
+   v
+UI / 路演交付冻结（Mock/Replay 控制台）
    |
    v
 比赛封版
@@ -110,12 +113,24 @@ Decision 输出是 `SUPPORT_CONTROLLED_TRIAL`（支持受控试运行），而�
 真实 Tool 首次联调验证。
 候选 Case 见 [`../cases/TEST-R3.md`](../cases/TEST-R3.md)。
 
-### 11. UI / Demo（待开始）
-面向最终用户的产品界面与公开演示。
-需等 Tool 验证稳定后再推进，避免把不稳定能力包装成产品。
+### 11. Demo 技术冻结（设计已定，产物待审）
+已冻结比赛演示契约 `DEMO_FREEZE_v1.0`：固定演示 Case、链路与兜底。
+主演示只能是 `DEMO-S` / TEST-P1；TEST-R3 仍是 Tool LIVE 候选，不得作为 3 分钟主线。
+现场失败按 LIVE → REPLAY → MOCK 诚实降级，禁止无角标静默切 Mock。
 
-### 12. 比赛封版（待开始）
+详见 [`../demo/DEMO_FREEZE.md`](../demo/DEMO_FREEZE.md)。
+数据包与脚本已落盘。前端已按该契约接入 Mock/Replay；L0 真实运行仍未开放。
+
+### 12. UI / 路演交付冻结（Mock/Replay 已落地）
+已实现可点击实验控制台（`frontend/`，`npm run dev`），并冻结路演文案与提交清单 `DELIVERY_FREEZE_v1.0`。
+默认加载 DEMO-S 预置回放；`GET /health` 只显示后端在线，**不得**标成真实运行。
+这是路演交付包，**不是** Tool LIVE 完成，也不是 `SOURCE_PUBLICATION_REVIEW`。
+
+详见 [`../delivery/DELIVERY_FREEZE.md`](../delivery/DELIVERY_FREEZE.md)、[`../../frontend/README.md`](../../frontend/README.md)。
+
+### 13. 比赛封版（待开始）
 比赛版本冻结，执行 `SOURCE_PUBLICATION_REVIEW` 与 `PUBLIC_SOURCE_MIGRATION`，正式源码经安全审核后公开。
+Demo 技术冻结与路演交付冻结都不是比赛封版。
 
 ---
 
@@ -123,6 +138,7 @@ Decision 输出是 `SUPPORT_CONTROLLED_TRIAL`（支持受控试运行），而�
 
 > 主链路已真实跑通并通过 5/5 验证，结论为**受控试运行**；
 > 当前主线是**真实 Tool 能力验证**，目标是让证据从结论级提升到过程级。
+> 路演前端为 Mock/Replay 控制台，**不是** Tool LIVE / 生产封版。
 
 ---
 
@@ -133,7 +149,7 @@ Decision 输出是 `SUPPORT_CONTROLLED_TRIAL`（支持受控试运行），而�
 | P0 | 完成 FIRST TOOL LIVE，取得真实 Tool Trace |
 | P0 | 补齐知识库路径证据（TEST-R3） |
 | P1 | 建立成本与延迟统一口径 |
-| P1 | UI / Demo 封装 |
+| P1 | RealApiAdapter（禁止把 health/Fixture 标成 LIVE） |
 | P2 | 比赛封版与源码公开评审 |
 
 ---
