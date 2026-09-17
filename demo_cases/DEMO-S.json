@@ -1,0 +1,148 @@
+{
+  "demo_id": "DEMO-S",
+  "formal_case_id": "TEST-P1",
+  "freeze_version": "DEMO_FREEZE_v1.0",
+  "source_mode": "L1_REPLAY",
+  "case_status": "completed",
+  "title": "POC 结论是否说过头",
+  "requirement": {
+    "goal": "仅基于已给事实，判断哪些结论已经被证明、哪些仍未被证明，当前是否足以宣布生产上线。",
+    "constraints": [
+      "冻结的 200 条静态业务样本上，端到端调用链 200/200 成功完成",
+      "独立人工标注 188/200 符合预期，质量得分 0.94，业务最低质量门槛 0.92",
+      "平台只提供 Token 用量，未提供可核验的真实货币成本；业务成本上限为平均每次不高于 0.08 元",
+      "平台返回了 time_cost，但单位及是否等同于业务端到端延迟尚未确认；业务延迟门槛为 P95 不高于 3000ms",
+      "尚未进行生产并发、峰值负载和长期稳定性验证",
+      "本 Case 不依赖实时外部工具"
+    ]
+  },
+  "candidate_solutions": [
+    {
+      "id": "A",
+      "name": "系统决策路径",
+      "summary": "按已证明 / 未证明分列，输出受控试运行，不把集成成功外推为生产可用。",
+      "status": "completed",
+      "role": "system"
+    },
+    {
+      "id": "B",
+      "name": "错误外推 Baseline",
+      "summary": "看到 5/5 PASS 或 200/200 成功就宣布可以上生产。",
+      "status": "completed",
+      "role": "naive_baseline"
+    }
+  ],
+  "experiment_progress": [
+    { "step": "需求解析", "status": "done" },
+    { "step": "对照实验", "status": "done" },
+    { "step": "评估与决策", "status": "done" }
+  ],
+  "metrics": {
+    "live1r_public": {
+      "http_200": "5/5",
+      "workflow_success": "5/5",
+      "evaluation_pass": "5/5",
+      "decision": "SUPPORT_CONTROLLED_TRIAL",
+      "comparison_eligible": true
+    },
+    "quality": [
+      { "solution": "A", "value": 0.94, "availability": "PROVIDED", "note": "188/200 符合预期，高于门槛 0.92" },
+      { "solution": "B", "value": 0.94, "availability": "PROVIDED", "note": "质量数字相同，但 Baseline 把质量达标外推为生产可用" }
+    ],
+    "latency_ms": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED", "note": "time_cost 单位未确认，不计入已证明项" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED", "note": "Baseline 把未知延迟当成已达标" }
+    ],
+    "cost_index": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED", "note": "仅有 Token 用量，无真实货币成本" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED", "note": "Baseline 把质量达标当成成本可控" }
+    ]
+  },
+  "evidence": [
+    {
+      "title": "集成已证明",
+      "summary": "LIVE-1R 公开摘要：HTTP 200 为 5/5，Workflow SUCCESS 为 5/5。",
+      "level": "strong",
+      "supports": "SUPPORT_CONTROLLED_TRIAL"
+    },
+    {
+      "title": "质量已达标",
+      "summary": "独立评估 PASS 5/5；题面质量 0.94 高于门槛 0.92。",
+      "level": "strong",
+      "supports": "SUPPORT_CONTROLLED_TRIAL"
+    },
+    {
+      "title": "成本尚未证明",
+      "summary": "无真实货币成本口径，不能把质量达标外推为成本可控。",
+      "level": "gap",
+      "supports": "not_production_ready"
+    },
+    {
+      "title": "延迟尚未证明",
+      "summary": "延迟口径未统一，不能把流程跑通外推为 SLA 达标。",
+      "level": "gap",
+      "supports": "not_production_ready"
+    },
+    {
+      "title": "并发与稳定性尚未证明",
+      "summary": "5 次重复不等于长期稳定性，也没有生产并发证据。",
+      "level": "gap",
+      "supports": "not_production_ready"
+    }
+  ],
+  "decision": {
+    "result": "建议进入受控试运行",
+    "code": "SUPPORT_CONTROLLED_TRIAL",
+    "risk_level": "LOW",
+    "headline": "满足当前实验阈值：支持受控试用",
+    "summary": "集成已证明、质量已达标，允许进入受控范围试运行；成本、延迟、并发和长期稳定性仍未证明，不能宣布生产可用。",
+    "rationale": [
+      "独立规则质量评估通过当前阈值。",
+      "LIVE-1R 五次重复均输出 SUPPORT_CONTROLLED_TRIAL，未外推为生产可用。",
+      "错误外推 Baseline 把 5/5 PASS 当成可以上生产，系统拒绝该结论。"
+    ],
+    "next_steps": [
+      "进入小范围受控试用",
+      "补齐真实成本与延迟口径后再评估是否扩大",
+      "达到样本量后复核，而不是把当前结果当成终点"
+    ],
+    "proven": ["integration", "quality"],
+    "unproven": ["real_cost", "latency_definition", "production_concurrency", "long_term_stability"]
+  },
+  "warnings": [
+    "SUPPORT_CONTROLLED_TRIAL 不等于 Production Ready。",
+    "禁止把 5/5 PASS 表述为稳定性或并发已验证。"
+  ],
+  "ui_states": {
+    "running": {
+      "case_status": "running",
+      "candidate_solutions": [
+        { "id": "A", "name": "系统决策路径", "summary": "正在按已证明 / 未证明分列评估。", "status": "running", "role": "system" },
+        { "id": "B", "name": "错误外推 Baseline", "summary": "对照路径排队中。", "status": "pending", "role": "naive_baseline" }
+      ],
+      "experiment_progress": [
+        { "step": "需求解析", "status": "done" },
+        { "step": "对照实验", "status": "running" },
+        { "step": "评估与决策", "status": "pending" }
+      ],
+      "decision": {
+        "result": "建议进入受控试运行",
+        "code": "SUPPORT_CONTROLLED_TRIAL",
+        "summary": "实验进行中，尚未输出最终决策。"
+      },
+      "warnings": ["运行中刷新时保持进度可见，不要展示后端日志。"]
+    },
+    "exception": {
+      "case_status": "failed",
+      "warnings": [
+        "现场 LIVE 偏离冻结 Decision，已切换到 DEMO-S 预置回放。",
+        "角标必须改为预置回放，不得继续显示真实运行。"
+      ],
+      "failover": {
+        "from": "L0_LIVE",
+        "to": "L1_REPLAY",
+        "reason": "decision_mismatch_or_transport_failure"
+      }
+    }
+  }
+}

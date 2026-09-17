@@ -27,13 +27,31 @@
 - Tencent Yuanqi real Tool integration
 - TEST-R3
 - Tool LIVE
+- RealApiAdapter / L0 真实运行角标
+- `SOURCE_PUBLICATION_REVIEW` 比赛封版
+
+## Demo 技术冻结
+
+- 状态：`DEMO_FREEZE_v1.0` **设计已定，产物待审**
+- 契约：[`docs/demo/DEMO_FREEZE.md`](docs/demo/DEMO_FREEZE.md)
+- 数据包：[`demo_cases/`](demo_cases/)
+- 脚本：[`demo_scripts/`](demo_scripts/)
+- 主演示 Case 固定为 `DEMO-S` / TEST-P1；TEST-R3 不得作为 3 分钟主线
+
+## 比赛交付 / 路演冻结
+
+- 状态：`DELIVERY_FREEZE_v1.0` **路演交付包已冻结**
+- 契约：[`docs/delivery/DELIVERY_FREEZE.md`](docs/delivery/DELIVERY_FREEZE.md)
+- 提交清单：[`docs/delivery/SUBMISSION.md`](docs/delivery/SUBMISSION.md)
+- 前端：[`frontend/`](frontend/) Mock/Replay 路演版，`npm run dev` → `http://127.0.0.1:5173`
+- 材料：[`presentation_assets/PITCH.md`](presentation_assets/PITCH.md)
+- **不是** Tool LIVE 完成，也不是生产封版。默认角标为预置回放，health 200 ≠ 真实运行。
 
 ## 团队并行可进行
 
-- UI
-- Mock Case
-- Demo
-- 路演材料
+- 脱敏截图入库（有内容再建 `public_artifacts/demo/`）
+- PPT 排版（文案已冻结，勿改 Decision 口径）
+- RealApiAdapter（不得把 Fixture 标成 LIVE）
 
 ## 路线说明
 

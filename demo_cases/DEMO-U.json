@@ -1,0 +1,114 @@
+{
+  "demo_id": "DEMO-U",
+  "formal_case_id": "TEST-R3",
+  "freeze_version": "DEMO_FREEZE_v1.0",
+  "source_mode": "L2_MOCK",
+  "case_status": "insufficient_evidence",
+  "title": "没有 Trace，就不能宣布根因",
+  "requirement": {
+    "goal": "同一输入、同一知识库：独立测试能检索到结果，对话流知识检索节点为空。在没有真实调用轨迹前，判断能否确定根因。",
+    "constraints": [
+      "TEST-R3 当前是 FIRST TOOL LIVE CANDIDATE，不是已证明 Tool LIVE",
+      "步骤必须先读取路径 / 配置 / 调用轨迹，再形成 Evidence，最后才允许判断原因",
+      "没有真实 Tool Trace 时，任何互斥根因都不能被宣布",
+      "本数据包不得假装已经取得真实 Tool Trace"
+    ]
+  },
+  "candidate_solutions": [
+    {
+      "id": "A",
+      "name": "系统决策路径",
+      "summary": "证据不足则明确说尚不能确定根因，输出继续验证。",
+      "status": "completed",
+      "role": "system"
+    },
+    {
+      "id": "B",
+      "name": "错误外推 Baseline",
+      "summary": "先猜一个原因（绑定错误 / 阈值过严 / 其实没调用），再补证据。",
+      "status": "completed",
+      "role": "naive_baseline"
+    }
+  ],
+  "experiment_progress": [
+    { "step": "需求解析", "status": "done" },
+    { "step": "对照实验", "status": "blocked" },
+    { "step": "评估与决策", "status": "done" }
+  ],
+  "metrics": {
+    "quality": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED", "note": "根因未证明，质量对比不适用" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED", "note": "猜测不能生成质量分" }
+    ],
+    "latency_ms": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED" }
+    ],
+    "cost_index": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED" }
+    ]
+  },
+  "evidence": [
+    {
+      "title": "现象可描述，过程不可证明",
+      "summary": "公开 Case 只确认「KB 独立测试有结果、对话流节点为空」。这是现象，不是根因。",
+      "level": "weak",
+      "supports": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "title": "缺少真实 Tool Trace",
+      "summary": "未取得可复核的调用轨迹，无法证明检索调用是否实际发生、结果是否被回传。",
+      "level": "gap",
+      "supports": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "title": "互斥假说均未排除",
+      "summary": "绑定错误、参数未传递、版本不匹配、阈值过严、调用未发生等假说彼此互斥，没有 Trace 就不能选一条宣布。",
+      "level": "gap",
+      "supports": "INSUFFICIENT_EVIDENCE"
+    }
+  ],
+  "decision": {
+    "result": "证据不足，继续验证",
+    "code": "INSUFFICIENT_EVIDENCE",
+    "risk_level": "HIGH",
+    "headline": "证据或关键指标不足：当前结论不可作为上线或根因依据",
+    "summary": "可以描述现象，不能确定根因。下一步是取得真实 Tool Trace 并形成可复核 Evidence，而不是先改配置再碰运气。",
+    "rationale": [
+      "Evaluator 在证据不完整时 fail-closed，不允许 PASS。",
+      "没有 Trace 就没有根因。",
+      "错误外推 Baseline 会先猜后补证据，这是本 Case 要拒绝的行为。"
+    ],
+    "next_steps": [
+      "真实读取知识库路径与对话流配置 / 版本",
+      "取得真实 Tool Trace，证明调用是否发生",
+      "形成可复核 Evidence 后再判断原因"
+    ],
+    "proven": [],
+    "unproven": ["root_cause", "tool_trace", "retrieval_call_occurred"]
+  },
+  "warnings": [
+    "TEST-R3 不得作为 3 分钟主演示，也不得口播为 Tool LIVE 已通过。",
+    "禁止展示内部原始报文或未脱敏响应。",
+    "UI 必须走证据不足状态页，而不是生成一个看起来完整的根因卡片。"
+  ],
+  "ui_states": {
+    "running": {
+      "case_status": "running",
+      "experiment_progress": [
+        { "step": "需求解析", "status": "done" },
+        { "step": "对照实验", "status": "running" },
+        { "step": "评估与决策", "status": "pending" }
+      ],
+      "warnings": ["正在检查是否存在可复核证据，尚未形成 Decision。"]
+    },
+    "exception": {
+      "case_status": "insufficient_evidence",
+      "warnings": [
+        "Mock 数据包缺少 evidence 数组时，页面应显示证据不足空态，不得用占位成功卡填满。",
+        "长文本需求不得撑破布局；空 evidence 不得崩溃。"
+      ]
+    }
+  }
+}

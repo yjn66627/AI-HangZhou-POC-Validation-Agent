@@ -1,0 +1,117 @@
+{
+  "demo_id": "DEMO-N",
+  "formal_case_id": "TEST-P1",
+  "freeze_version": "DEMO_FREEZE_v1.0",
+  "source_mode": "L2_MOCK",
+  "case_status": "completed",
+  "title": "未证明项不足以进入生产推荐",
+  "requirement": {
+    "goal": "业务方希望根据同一轮 POC 结果直接宣布生产上线。系统必须判断该候选能否进入推荐。",
+    "constraints": [
+      "集成与质量数字与 DEMO-S / TEST-P1 相同",
+      "真实货币成本未建立口径",
+      "延迟口径未统一",
+      "无生产并发与长期稳定性证据",
+      "本次问题不是「AI 有没有价值」，而是「能不能进入生产推荐」"
+    ]
+  },
+  "candidate_solutions": [
+    {
+      "id": "A",
+      "name": "系统决策路径",
+      "summary": "未证明项构成阻断：暂缓，不把该候选放入生产推荐。",
+      "status": "completed",
+      "role": "system"
+    },
+    {
+      "id": "B",
+      "name": "错误外推 Baseline",
+      "summary": "质量达标 + 5/5 PASS → 直接推荐上生产。",
+      "status": "completed",
+      "role": "naive_baseline"
+    }
+  ],
+  "experiment_progress": [
+    { "step": "需求解析", "status": "done" },
+    { "step": "对照实验", "status": "done" },
+    { "step": "评估与决策", "status": "done" }
+  ],
+  "metrics": {
+    "quality": [
+      { "solution": "A", "value": 0.94, "availability": "PROVIDED", "note": "质量达标不能单独构成生产推荐" },
+      { "solution": "B", "value": 0.94, "availability": "PROVIDED", "note": "Baseline 只用质量数字做推荐" }
+    ],
+    "latency_ms": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED", "note": "延迟未证明，生产推荐不合格" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED", "note": "Baseline 把未知延迟当成已达标；图表不得把该空值画成 0" }
+    ],
+    "cost_index": [
+      { "solution": "A", "value": null, "availability": "NOT_PROVIDED", "note": "真实成本未知，不能声称成本可控" },
+      { "solution": "B", "value": null, "availability": "NOT_PROVIDED", "note": "Baseline 把质量达标当成成本可控；禁止用 0 填未知成本" }
+    ]
+  },
+  "evidence": [
+    {
+      "title": "生产上线问题被明确提出",
+      "summary": "本次验收问题是「能否宣布生产上线」，不是「能否受控试运行」。",
+      "level": "strong",
+      "supports": "DEFER"
+    },
+    {
+      "title": "成本与延迟证据缺口",
+      "summary": "关键成本 / 延迟指标为 NOT_PROVIDED。未知指标不得记为 0。",
+      "level": "gap",
+      "supports": "DEFER"
+    },
+    {
+      "title": "Baseline 推荐不合格",
+      "summary": "错误外推 Baseline 把未证明项当成已证明，不能进入推荐池。",
+      "level": "strong",
+      "supports": "ineligible"
+    }
+  ],
+  "decision": {
+    "result": "暂缓，不进入推荐",
+    "code": "DEFER",
+    "risk_level": "HIGH",
+    "headline": "暂缓：尚未满足生产推荐的验收条件",
+    "summary": "同一组 POC 事实足以支持受控试运行，但不足以推荐生产上线。系统拒绝把错误外推 Baseline 放入推荐。",
+    "rationale": [
+      "生产推荐需要成本、延迟、并发或稳定性中至少已冻结且已证明的口径，当前均未证明。",
+      "质量达标不能覆盖未证明项。",
+      "拒绝推荐不等于否定 POC 价值；DEMO-S 已说明受控试运行档位仍然成立。"
+    ],
+    "next_steps": [
+      "先建立真实成本与延迟口径",
+      "按相同实验规格补测后再评估是否进入推荐",
+      "在口径补齐前保持受控试用，不扩大为生产"
+    ],
+    "recommended_candidate_id": null,
+    "ineligible_candidates": ["B"],
+    "proven": ["integration", "quality"],
+    "unproven": ["real_cost", "latency_definition", "production_concurrency", "long_term_stability"]
+  },
+  "warnings": [
+    "本 Case 证明系统不会一味推荐上线。",
+    "禁止把 DEFER 口播成「AI 没价值」或「实验失败」。",
+    "图表不得把 NOT_PROVIDED 画成 0。"
+  ],
+  "ui_states": {
+    "running": {
+      "case_status": "running",
+      "experiment_progress": [
+        { "step": "需求解析", "status": "done" },
+        { "step": "对照实验", "status": "done" },
+        { "step": "评估与决策", "status": "running" }
+      ],
+      "warnings": ["正在核对其是否满足生产推荐条件。"]
+    },
+    "exception": {
+      "case_status": "completed",
+      "warnings": [
+        "若 UI 收到成本或延迟为 0 且未标注 NOT_PROVIDED，视为数据包错误，不渲染为已测通过。",
+        "缺字段时展示空态，不崩溃。"
+      ]
+    }
+  }
+}
