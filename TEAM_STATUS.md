@@ -14,6 +14,7 @@
 - Tool-enabled Prompt Integration
 - Prompt Integration Windows Apply
 - Offline E2E
+- Backend POC 验证 Agent 收案入口（`POST /api/v1/agent/intake`，不下 Decision）
 
 ## 正在进行
 

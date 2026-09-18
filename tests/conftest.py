@@ -9,6 +9,13 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@pytest.fixture(autouse=True)
+def isolate_agent_llm(monkeypatch) -> None:
+    monkeypatch.delenv("AGENT_LLM_URL", raising=False)
+    monkeypatch.delenv("AGENT_LLM_API_KEY", raising=False)
+    monkeypatch.delenv("DEEPSEEK_API_KEY", raising=False)
+
+
 @pytest.fixture
 def root() -> Path:
     return ROOT

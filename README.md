@@ -86,6 +86,7 @@ Comparison          跨 Case、跨版本横向比较
 | --- | --- |
 | [`docs/architecture/PROJECT_ARCHITECTURE.md`](docs/architecture/PROJECT_ARCHITECTURE.md) | 系统架构、模块职责、各模块验证状态 |
 | [`docs/progress/CURRENT_PROGRESS.md`](docs/progress/CURRENT_PROGRESS.md) | 完整进展时间线（含失败历史，不删） |
+| [`docs/agent/POC_VALIDATION_AGENT.md`](docs/agent/POC_VALIDATION_AGENT.md) | 后端收案 Agent：自然语言 → Formal Case，不下 Decision |
 | [`docs/cases/TEST-P1.md`](docs/cases/TEST-P1.md) | 核心 Case：区分"已证明"与"未证明" |
 | [`docs/cases/TEST-R3.md`](docs/cases/TEST-R3.md) | 知识库检索异常 Case，首个 Tool 验证候选 |
 | [`docs/live/LIVE1R_PUBLIC_SUMMARY.md`](docs/live/LIVE1R_PUBLIC_SUMMARY.md) | LIVE-1R 脱敏公开摘要 |
@@ -96,6 +97,7 @@ Comparison          跨 Case、跨版本横向比较
 | [`demo_scripts/`](demo_scripts/README.md) | 3/5 分钟脚本、兜底口播、评委 FAQ |
 | [`presentation_assets/`](presentation_assets/README.md) | 路演 PPT 文案与架构节点 |
 | [`docs/team/TEAM_ROLES.md`](docs/team/TEAM_ROLES.md) | 团队分工 |
+| [`docs/ENV.md`](docs/ENV.md) | 环境变量说明（无真实密钥；未配模型 Key 时走确定性编译） |
 | [`docs/PUBLICATION_POLICY.md`](docs/PUBLICATION_POLICY.md) | 公开边界：什么能公开，什么永远不能 |
 | [`public_artifacts/`](public_artifacts/README.md) | 可公开资产（架构图、Demo、UI 素材） |
 | [`examples/`](examples/README.md) | 可公开示例 |
