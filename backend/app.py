@@ -4,11 +4,15 @@ import hmac
 import os
 import threading
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 from typing import Any, Mapping
 from uuid import uuid4
 
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Header, HTTPException
 from pydantic import ValidationError
+
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 from experiment.case_registry import CaseRegistry, CaseRegistryError
 from experiment.evaluation_contract import compile_live_acceptance
@@ -21,7 +25,8 @@ from experiment.executor_base import (
 from experiment.pipeline import run_multi_candidate_pipeline
 from .adapters.yuanqi import YuanqiMappingError, prepare_run_requests
 from .live_executor import ExternalApiLiveExecutor, PassthroughWorkflowResultAdapter, YuanqiLiveExecutor
-from .schemas import RunAccepted, RunRequest, RunStatusResponse
+from .schemas import AgentIntakeRequest, AgentIntakeResponse, RunAccepted, RunRequest, RunStatusResponse
+from .agent.service import handle_message, intake_public_view
 
 app = FastAPI(title="AI POC实验执行后端", version="1.2.3")
 RUN_STORE: dict[str, dict[str, Any]] = {}
@@ -181,6 +186,38 @@ def create_yuanqi_run(payload: dict[str, Any]) -> RunAccepted:
     except (YuanqiMappingError, ValidationError, ValueError) as exc:
         raise HTTPException(status_code=422, detail=f"yuanqi_payload_invalid:{exc}") from exc
     return _submit_run(request)
+
+
+@app.post("/api/v1/agent/intake", response_model=AgentIntakeResponse, dependencies=[Depends(require_api_key)])
+def create_agent_intake(request: AgentIntakeRequest) -> AgentIntakeResponse:
+    """闲聊走对话；具体验证问题才编译 Formal Case 并可选提交实验流水线。不下 Decision。"""
+    history = [item.model_dump() for item in request.history]
+    try:
+        routed = handle_message(request.goal, request.constraints, history)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    if routed.get("intent") == "SMALL_TALK":
+        return AgentIntakeResponse(**routed)
+    plan = routed
+    view = intake_public_view(plan)
+    if not request.submit:
+        return AgentIntakeResponse(**view)
+    accepted = _submit_run(
+        RunRequest.model_validate(
+            {
+                "task": plan["task"],
+                "candidates": plan["candidates"],
+                "experiment_specs": plan["experiment_specs"],
+                "run_context": plan["run_context"],
+            }
+        )
+    )
+    return AgentIntakeResponse(
+        **view,
+        run_id=accepted.run_id,
+        status=accepted.status,
+        result_url=accepted.result_url,
+    )
 
 
 @app.get("/api/v1/runs/{run_id}", response_model=RunStatusResponse, dependencies=[Depends(require_api_key)])

@@ -17,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/intake" element={<Navigate to="/" replace />} />
         <Route path="/cases/:id" element={<AppShell />}>
           <Route index element={<Navigate to="requirement" replace />} />
           <Route path="requirement" element={<RequirementPage />} />

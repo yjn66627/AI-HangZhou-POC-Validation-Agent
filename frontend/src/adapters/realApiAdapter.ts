@@ -6,6 +6,7 @@
  *
  * 切换位置：`src/context/DemoContext.tsx` 中的 loader。
  * 当前交付版禁止启用本 Adapter 作为「真实运行」角标来源。
+ * 收案页走独立模块 `src/adapters/agentIntake.ts`，不经过本开关。
  */
 import type { DemoPack } from "./types";
 

@@ -44,6 +44,9 @@ Demo 技术冻结（设计已定，产物待审）
 UI / 路演交付冻结（Mock/Replay 控制台）
    |
    v
+POC 验证 Agent 收案层
+   |
+   v
 比赛封版
 ```
 
@@ -128,7 +131,15 @@ Decision 输出是 `SUPPORT_CONTROLLED_TRIAL`（支持受控试运行），而�
 
 详见 [`../delivery/DELIVERY_FREEZE.md`](../delivery/DELIVERY_FREEZE.md)、[`../../frontend/README.md`](../../frontend/README.md)。
 
-### 13. 比赛封版（待开始）
+### 13. POC 验证 Agent 收案层（已落地，非聊天机器人）
+后端新增 `POST /api/v1/agent/intake`：把自然语言需求编译成 Formal Case，再交给现有实验流水线。
+默认 `planner_source=DETERMINISTIC`；只有配置 `AGENT_LLM_URL` 才调用可选大模型，且模型不得输出 Decision。
+前端收案页：`http://127.0.0.1:5173/intake`（需后端与 API_KEY；Fixture 流水线，不是 Tool LIVE）。
+这不是 Tool LIVE，也不是生产封版。
+
+详见 [`../agent/POC_VALIDATION_AGENT.md`](../agent/POC_VALIDATION_AGENT.md)。
+
+### 14. 比赛封版（待开始）
 比赛版本冻结，执行 `SOURCE_PUBLICATION_REVIEW` 与 `PUBLIC_SOURCE_MIGRATION`，正式源码经安全审核后公开。
 Demo 技术冻结与路演交付冻结都不是比赛封版。
 
