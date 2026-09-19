@@ -179,6 +179,7 @@ class BlockedReason(str, Enum):
     CASE_NOT_ALLOWED = "CASE_NOT_ALLOWED"
     EXPERIMENT_NOT_ALLOWED = "EXPERIMENT_NOT_ALLOWED"
     CANDIDATE_NOT_ALLOWED = "CANDIDATE_NOT_ALLOWED"
+    BINDING_ENVIRONMENT_NOT_ALLOWED = "BINDING_ENVIRONMENT_NOT_ALLOWED"
 
 
 class BlockedStage(str, Enum):
@@ -403,8 +404,8 @@ class CaseResourceBinding(BaseModel):
 
     @model_validator(mode="after")
     def _binding_constants(self) -> "CaseResourceBinding":
-        if self.environment != "CONTROLLED_TEST":
-            raise ValueError("binding_environment_must_be_CONTROLLED_TEST")
+        if self.environment not in {"CONTROLLED_TEST", "STAGING", "PRODUCTION"}:
+            raise ValueError("invalid_binding_environment")
         if not self.read_only:
             raise ValueError("binding_must_be_read_only")
         return self
@@ -454,6 +455,15 @@ class ToolRuntimeConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
     enabled: bool = False
     limits: ToolRuntimeLimits = Field(default_factory=ToolRuntimeLimits)
+    allowed_binding_environments: list[str] = Field(default_factory=lambda: ["CONTROLLED_TEST"], min_length=1)
+
+    @field_validator("allowed_binding_environments")
+    @classmethod
+    def _binding_environment_allowlist(cls, value: list[str]) -> list[str]:
+        allowed = {"CONTROLLED_TEST", "STAGING", "PRODUCTION"}
+        if len(value) != len(set(value)) or any(item not in allowed for item in value):
+            raise ValueError("invalid_allowed_binding_environments")
+        return value
 
 
 class ToolRuntimeContext(BaseModel):
@@ -786,6 +796,8 @@ class ToolRuntimeCore:
             return BlockedReason.WRONG_CASE_BINDING
         if not binding.read_only:
             return BlockedReason.NON_READ_ONLY_OPERATION
+        if binding.environment not in set(self.config.allowed_binding_environments):
+            return BlockedReason.BINDING_ENVIRONMENT_NOT_ALLOWED
         if request.executable_tool_id not in set(binding.allowed_executable_tools):
             return BlockedReason.WRONG_CASE_BINDING
 
