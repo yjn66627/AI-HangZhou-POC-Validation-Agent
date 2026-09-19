@@ -28,9 +28,9 @@
 
 | 成员 | 角色 | 主要贡献 |
 | --- | --- | --- |
-| 小杨 | Project Lead / Integration | 主要负责后端核心链路、真实系统联调、演示主页、技术验证与本次提交整合 |
-| 小林 | Product / UX / Demo Lead | UI、产品体验、公开 Demo、展示故事线、试玩反馈 |
-| 小刘 | Case / QA / Research Support | Case 补充、测试反馈、Bug 复现、Issue、公开资料整理 |
+| 小杨 | Project Lead / Integration | 后端核心链路、真实系统联调、技术验证、演示主页与本次提交整合 |
+| 小刘 | Frontend Development | 前端开发、业务系统界面与前端展示优化 |
+| 小林 | Product Materials / Documentation / Coordination | 产品材料、文档与项目对接 |
 
 本栏目用于说明贡献来源，不替代 Git 提交记录，也不改变各文件的公开协作属性。
 
