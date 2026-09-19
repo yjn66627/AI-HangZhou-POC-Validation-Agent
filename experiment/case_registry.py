@@ -23,13 +23,13 @@ class CaseRegistry:
 
     def __init__(self, *, public_files: list[Path] | None = None, private_files: list[Path] | None = None):
         self.public_files = public_files or [DATASETS / "fixture_inputs.json", DATASETS / "formal_test_inputs.json"]
-        private_override = os.getenv("PRIVATE_GOLD_FILES", "").strip()
+        registry_override = os.getenv("CASE_REGISTRY_PATH", "").strip()
         if private_files is not None:
             self.private_files = private_files
-        elif private_override:
-            self.private_files = [Path(x) for x in private_override.split(os.pathsep) if x]
+        elif registry_override:
+            self.private_files = [Path(x.strip()) for x in registry_override.split(os.pathsep) if x.strip()]
         else:
-            self.private_files = [DATASETS / "fixture_gold_private.json", DATASETS / "formal_test_gold_private.json"]
+            self.private_files = []
         self._public = self._load(self.public_files)
         self._private = self._load(self.private_files)
 

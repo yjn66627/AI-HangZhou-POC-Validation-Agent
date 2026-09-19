@@ -58,7 +58,7 @@ def test_post_then_get_returns_full_chain(api_headers):
     assert result['evaluation_result']['quality']['source']=='INDEPENDENT_RULES'
     assert result['decision_card']['decision']=='SUPPORT_CONTROLLED_TRIAL'
     assert result['comparison_result']['recommended_candidate_id']==load()['candidate']['candidate_id']
-    assert result['evaluation_contract_source']=='PRIVATE_GOLD'
+    assert result['evaluation_contract_source'] != 'LIVE_ACCEPTANCE_CONTRACT'
     assert seen[0] in {'QUEUED','RUNNING','COMPLETED'}
 
 

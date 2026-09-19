@@ -1,151 +1,90 @@
 # AI POC验证与技术决策智能体
 
-**AI-HangZhou-POC-Validation-Agent**
+面向企业技术选型的 POC 验证与技术决策智能体：把自然语言需求整理成可验证实验，再用实验结果和证据支持技术决策。
 
-面向企业 AI POC 实验验证、自动评估与技术决策的智能体系统
-参赛项目：**AI杭州·超级智能体赛**
+## 项目流程
 
-在线体验：本地 Demo 见 [`frontend/README.md`](frontend/README.md)（`http://127.0.0.1:5173`，预置回放，不是生产可用）
+企业需求 → 候选方案 → POC实验 → 效果评估 → 技术决策
 
----
+## 在线展示
 
-## 一、30 秒看懂这个项目
+- 演示主页：[https://just-wxtx.upma.site/](https://just-wxtx.upma.site/)
+- 腾讯元器体验：[打开体验](https://yuanqi.tencent.com/webim/#/chat/rPLdMX?appid=2097996104859300096&experience=true&space_id=spm0Lq34zNykEjAFYKI2s3c9MAyrJHkC)
 
-**它不是普通聊天机器人。**
+## 当前验证事实
 
-普通聊天机器人回答的是"我能不能做这件事"。
-这个系统回答的是：
+- 腾讯元器真实 Tool 请求 PASS
+- 公网调用 HTTP 200
+- Recovery Bridge SUCCESS
+- Backend HTTP 200
+- Experiment Run COMPLETED
+- Result 非空
 
-> **"这件事，我们到底证明到了什么程度？能不能上生产？"**
+固定技术口径：
 
-它把一句模糊的需求，变成一条可复核、可追责、可比较的证据链：
+> 真实腾讯元器公网 Tool 调用 + 真实系统链路 + 受控实验 Fixture 数据
 
-```
-需求 / Case
-    |
-    v
-Backend             接收需求，编排实验，落库留痕
-    |
-    v
-Gateway             统一出口：模型 / 工具 / 知识库调用
-    |
-    v
-AI Executor         真实执行 Workflow（不是模拟）
-    |
-    v
-Workflow Result     结构化执行结果
-    |
-    v
-Evaluator           独立评估：结果是否达标
-    |
-    v
-Decision Engine     技术决策：支持 / 驳回 / 受控试运行
-    |
-    v
-Comparison          跨 Case、跨版本横向比较
-```
+## Contributors / 团队贡献
 
-核心命题：
-**把"AI 项目能不能上线"从人的主观判断，变成机器可复核的证据判定。**
-
----
-
-## 二、当前真实进展
-
-| 检查项 | 结果 |
-| --- | --- |
-| LIVE-1R 真实实验 | 已完成 |
-| HTTP 200 | 5 / 5 |
-| Workflow SUCCESS | 5 / 5 |
-| Evaluation PASS | 5 / 5 |
-| Decision | 全部 = `SUPPORT_CONTROLLED_TRIAL` |
-| Comparison eligible | true |
-| 当前阶段 | 进入真实 Tool 验证阶段 |
-| Demo 技术冻结 | `v1.0` 设计已定 |
-| 路演前端 | Mock/Replay 可 `npm run dev`，不是 Tool LIVE |
-| UI / Demo 封装 | 路演控制台已冻结；RealApiAdapter 未完成 |
-
-> ## 重要：`SUPPORT_CONTROLLED_TRIAL` ≠ Production Ready
->
-> 当前结论的准确含义是：**集成已证明、质量已达标，可以进入受控试运行。**
->
-> 它**不代表**：
-> - 真实成本已证明
-> - 生产并发已证明
-> - 长期稳定性已证明
-> - Latency 口径已统一
->
-> 请不要对外表述为"已经可以上生产"。
-> 严格区分"已证明的事实"和"尚未证明的事实"，就是这个项目的核心能力本身。
-
----
-
-## 三、仓库导航
-
-| 路径 | 内容 |
-| --- | --- |
-| [`docs/architecture/PROJECT_ARCHITECTURE.md`](docs/architecture/PROJECT_ARCHITECTURE.md) | 系统架构、模块职责、各模块验证状态 |
-| [`docs/progress/CURRENT_PROGRESS.md`](docs/progress/CURRENT_PROGRESS.md) | 完整进展时间线（含失败历史，不删） |
-| [`docs/agent/POC_VALIDATION_AGENT.md`](docs/agent/POC_VALIDATION_AGENT.md) | 后端收案 Agent：自然语言 → Formal Case，不下 Decision |
-| [`docs/cases/TEST-P1.md`](docs/cases/TEST-P1.md) | 核心 Case：区分"已证明"与"未证明" |
-| [`docs/cases/TEST-R3.md`](docs/cases/TEST-R3.md) | 知识库检索异常 Case，首个 Tool 验证候选 |
-| [`docs/live/LIVE1R_PUBLIC_SUMMARY.md`](docs/live/LIVE1R_PUBLIC_SUMMARY.md) | LIVE-1R 脱敏公开摘要 |
-| [`docs/demo/DEMO_FREEZE.md`](docs/demo/DEMO_FREEZE.md) | Demo 技术冻结契约 |
-| [`docs/delivery/DELIVERY_FREEZE.md`](docs/delivery/DELIVERY_FREEZE.md) | ⑫ 路演交付冻结（UI / 材料 / 演示 / 提交） |
-| [`frontend/`](frontend/README.md) | 实验控制台（npm 启动，默认预置回放） |
-| [`demo_cases/`](demo_cases/README.md) | 冻结演示 Case 数据包 |
-| [`demo_scripts/`](demo_scripts/README.md) | 3/5 分钟脚本、兜底口播、评委 FAQ |
-| [`presentation_assets/`](presentation_assets/README.md) | 路演 PPT 文案与架构节点 |
-| [`docs/team/TEAM_ROLES.md`](docs/team/TEAM_ROLES.md) | 团队分工 |
-| [`docs/ENV.md`](docs/ENV.md) | 环境变量说明（无真实密钥；未配模型 Key 时走确定性编译） |
-| [`docs/PUBLICATION_POLICY.md`](docs/PUBLICATION_POLICY.md) | 公开边界：什么能公开，什么永远不能 |
-| [`public_artifacts/`](public_artifacts/README.md) | 可公开资产（架构图、Demo、UI 素材） |
-| [`examples/`](examples/README.md) | 可公开示例 |
-
-协作方式见 [`CONTRIBUTING.md`](CONTRIBUTING.md)。
-
----
-
-## 四、公开边界
-
-本仓库是 **Public**，采用 `PUBLIC_PARTICIPATION_MODE`。
-但公开的是**代码与文档**，不是**内部证据与凭据**。
-
-**可以公开**：项目文档、公开 Schema、公开 Formal Case、架构图、当前进度、脱敏 LIVE 摘要、UI / Demo、团队分工、公开 Issue。
-
-**永远不公开**：私有评测答案、密钥类凭据、认证请求头、会话 Cookie、环境变量文件、第三方平台登录信息、未脱敏的原始响应报文、内部原始证据、回滚凭据、浏览器凭据、本机隐私信息、任何真实口令或验证码。
-
-完整规则与提交前自检清单见 [`docs/PUBLICATION_POLICY.md`](docs/PUBLICATION_POLICY.md)。
-
----
-
-## 五、当前阶段说明：冻结基线已同步
-
-本仓库已同步当前正式冻结基线 `POST_C1D_PRE_REAL_TOOL_WINDOWS_BASELINE` 的可公开源码、Contract、测试与必要配置模板。
-
-同步内容不包含 Private Gold、内部原始证据、真实凭据或机器专用文件。并行开发中的 Project-native Real Tool Adapter（D1）仍处于独立开发 / 审查流程，不属于本次正式团队基线。
-
----
-
-## 六、团队
-
-| 成员 | 角色 | 职责 |
+| 成员 | 角色 | 主要贡献 |
 | --- | --- | --- |
-| 小杨 | Project Lead + Experiment Lead | 总体架构、Formal Experiment、Runtime、LIVE、版本治理、最终决策 |
-| 小林 | Product / UX / Demo Lead | UI、产品体验、公开 Demo、展示故事线、试玩反馈 |
-| 小刘 | Case / QA / Research Support | Case 补充、测试反馈、Bug 复现、Issue、公开资料整理 |
+| 小杨 | Project Lead / Integration | 后端核心链路、真实系统联调、技术验证、演示主页与本次提交整合 |
+| 小刘 | Frontend Development | 前端开发、业务系统界面与前端展示优化 |
+| 小林 | Product Materials / Documentation / Coordination | 产品材料、文档与项目对接 |
 
-详见 [`docs/team/TEAM_ROLES.md`](docs/team/TEAM_ROLES.md)。
+本栏目用于说明贡献来源，不替代 Git 提交记录，也不改变各文件的公开协作属性。
 
----
+## 本地运行
 
-## 七、License
+### 后端
 
-本仓库**当前未添加开源 License**。
+需要 Python 3.12 或更高版本：
 
-仓库公开不等于自动授权他人复制、修改、商用。
-License 由项目负责人后续单独决定。
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn backend.app:app --host 127.0.0.1 --port 8000
+```
 
----
+Windows PowerShell 激活虚拟环境时使用：
 
-_本仓库为团队公开协作入口。安全优先，先审计后提交。_
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+### 前端
+
+```bash
+cd frontend
+npm ci
+npm run dev
+```
+
+浏览器打开 `http://127.0.0.1:5173/`。
+
+### 演示主页
+
+```bash
+python -m http.server 8080 --directory demo-site
+```
+
+浏览器打开 `http://127.0.0.1:8080/`。
+
+## 目录说明
+
+| 目录 | 内容 |
+| --- | --- |
+| `backend/` | Backend API 与收案服务 |
+| 执行层组件 | Executor 运行组件 |
+| `experiment/` | 实验执行、评估与决策引擎 |
+| `contracts/` | 请求、结果与决策契约 |
+| `frontend/` | 团队最新前端控制台 |
+| `demo_cases/` | 可公开演示案例 |
+| `datasets/` | 公开测试输入 |
+| `demo-site/` | 比赛演示主页 |
+| `adapters/` | 外部系统映射模板 |
+
+## 安全说明
+
+仓库只包含源码、公开文档、示例数据和演示资源。真实密钥、访问令牌、Cookie、私有评测数据和本机配置不应提交到仓库。

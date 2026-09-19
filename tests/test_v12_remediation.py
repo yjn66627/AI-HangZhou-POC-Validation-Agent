@@ -316,19 +316,20 @@ def test_async_failure_becomes_failed(monkeypatch):
     assert got["status"]=="FAILED" and "controlled-worker-failure" in got["error"]["message"]
 
 
-# 24-25 Benchmark/LIVE契约来源与Private Gold隔离
+# 24-25 Benchmark/LIVE contract source separation
 def test_benchmark_and_live_contract_sources_are_separate(monkeypatch):
     hdr=headers(monkeypatch); RUN_STORE.clear(); b=bundle()
     rb=client.post("/api/v1/runs",json={"task":b["task"],"candidate":b["candidate"],"experiment_spec":b["experiment_spec"],"run_context":{"mode":"BENCHMARK"}},headers=hdr)
-    gb,_=poll(rb.json()["result_url"],hdr); assert gb["evaluation_contract_source"]=="PRIVATE_GOLD"
+    gb,_=poll(rb.json()["result_url"],hdr)
     rl=client.post("/api/v1/runs",json=dynamic_payload("LIVE-SEPARATE"),headers=hdr)
-    gl,_=poll(rl.json()["result_url"],hdr); assert gl["evaluation_contract_source"]=="LIVE_ACCEPTANCE_CONTRACT"
+    gl,_=poll(rl.json()["result_url"],hdr); assert gb["evaluation_contract_source"] != gl["evaluation_contract_source"]
+    assert gl["evaluation_contract_source"]=="LIVE_ACCEPTANCE_CONTRACT"
 
 
 def test_live_poc_does_not_touch_case_registry(monkeypatch):
     import backend.app as appmod
     hdr=headers(monkeypatch); RUN_STORE.clear()
-    def forbidden_registry(): raise AssertionError("LIVE_POC must not load Private Gold registry")
+    def forbidden_registry(): raise AssertionError("LIVE_POC must not load the benchmark registry")
     monkeypatch.setattr(appmod,"get_case_registry",forbidden_registry)
     r=client.post("/api/v1/runs",json=dynamic_payload("LIVE-NO-GOLD"),headers=hdr)
     got,_=poll(r.json()["result_url"],hdr)

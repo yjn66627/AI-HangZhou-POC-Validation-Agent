@@ -187,36 +187,3 @@ class RunStatusResponse(StrictModel):
     evaluation_result: dict[str, Any] | None = None
     decision_card: dict[str, Any] | None = None
     error: dict[str, Any] | None = None
-
-
-class AgentChatTurn(StrictModel):
-    role: Literal["user", "assistant"]
-    content: str
-
-
-class AgentIntakeRequest(StrictModel):
-    goal: str
-    constraints: list[str] = Field(default_factory=list)
-    submit: bool = True
-    history: list[AgentChatTurn] = Field(default_factory=list)
-
-
-class AgentCandidateSummary(StrictModel):
-    id: str
-    name: str
-    summary: str
-
-
-class AgentIntakeResponse(StrictModel):
-    case_id: str
-    intent: Literal["VALIDATION", "SMALL_TALK"] = "VALIDATION"
-    planner_source: str
-    goal: str
-    reply: str | None = None
-    proven: list[str]
-    unproven: list[str]
-    candidates: list[AgentCandidateSummary]
-    warnings: list[str]
-    run_id: str | None = None
-    status: str | None = None
-    result_url: str | None = None
