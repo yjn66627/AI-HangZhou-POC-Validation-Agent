@@ -39,7 +39,7 @@ AGENT_LLM_API_KEY=<你的 DeepSeek API Key>
 | `LIVE_EXECUTOR_URL` | 外部 LIVE 时 | 空 | 外部 Executor 地址 |
 | `LIVE_EXECUTOR_API_KEY` | 外部 LIVE 时 | 空 | 外部 Executor 鉴权 |
 | `LIVE_EXECUTOR_TIMEOUT_SECONDS` | 否 | `20` | 外部 LIVE 超时 |
-| `PRIVATE_GOLD_FILES` | 否 | 空 | 仅本机 Private Gold 覆盖路径；不得提交真实文件 |
+| `CASE_REGISTRY_PATH` | 否 | 空 | 可选自定义 Case registry 文件路径；未配置时不挂载额外数据集 |
 
 ## 收案 Agent（可选大模型）
 
