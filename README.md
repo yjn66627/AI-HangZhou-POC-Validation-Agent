@@ -24,6 +24,16 @@
 
 > 真实腾讯元器公网 Tool 调用 + 真实系统链路 + 受控实验 Fixture 数据
 
+## Contributors / 团队贡献
+
+| 成员 | 角色 | 主要贡献 |
+| --- | --- | --- |
+| 小杨 | Project Lead / Integration | 主要负责后端核心链路、真实系统联调、演示主页、技术验证与本次提交整合 |
+| 小林 | Product / UX / Demo Lead | UI、产品体验、公开 Demo、展示故事线、试玩反馈 |
+| 小刘 | Case / QA / Research Support | Case 补充、测试反馈、Bug 复现、Issue、公开资料整理 |
+
+本栏目用于说明贡献来源，不替代 Git 提交记录，也不改变各文件的公开协作属性。
+
 ## 本地运行
 
 ### 后端
