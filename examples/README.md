@@ -53,9 +53,11 @@ examples/
 
 ## 五、当前状态
 
-目录已建立，**暂无公开示例**。
+已恢复 5 个历史 sandbox bundle 与 1 个元器请求模板，并逐文件核对历史归档和冻结测试资源清单。它们是可公开的受控模拟输入，不是实际企业测量结果。
 
-正式源码与公开 Schema 迁移完成后，同步补充可运行示例。
+`fx-*_bundle.json` 保留 `SANDBOX_FIXTURE_ONLY` 标记；`yuanqi_front_half_payload_TEMPLATE_NOT_LIVE.json` 只说明请求协议，测试执行器使用 stub/mock。`datasets/fixture_inputs.json` 的 5 行执行器可见输入也已与这些 bundle 的 Task 逐字段匹配，不含预期答案字段。
+
+赛后 CloudBase 的新合成响应位于 `cloudfunction/function/fixtures/synthetic_demo_success.json`，明确标记为 `SYNTHETIC_DEMO_DATA`，不包含线上冻结响应。
 参见 [`../docs/architecture/PROJECT_ARCHITECTURE.md`](../docs/architecture/PROJECT_ARCHITECTURE.md) 了解当前阶段。
 
 ---

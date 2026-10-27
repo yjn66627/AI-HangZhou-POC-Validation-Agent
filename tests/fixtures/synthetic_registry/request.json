@@ -1,0 +1,94 @@
+{
+  "data_origin": "SYNTHETIC_DEMO_DATA",
+  "request": {
+    "task": {
+      "schema_version": "2.1",
+      "task_id": "synthetic-r4-task-001",
+      "case_id": "SYNTHETIC-R4-REGISTRY-001",
+      "user_query": "SYNTHETIC_DEMO_DATA: ask a clarifying question about a fictional sample. No enterprise experiment is measured.",
+      "visible_context": {
+        "data_origin": "SYNTHETIC_DEMO_DATA",
+        "fictional_topic": "Example Workshop"
+      },
+      "available_docs": [
+        "synthetic-doc-001"
+      ],
+      "available_tools": [
+        "retrieve_context"
+      ],
+      "safety_constraints": {
+        "allow_write_operations": false,
+        "require_evidence_for_dynamic_claims": true,
+        "prohibited_operations": [
+          "write_resource"
+        ]
+      },
+      "business_constraints": {},
+      "metadata": {
+        "source_dataset": "SYNTHETIC_DEMO_DATA",
+        "source_ref": "SYNTHETIC-R4-REGISTRY-001",
+        "platform_hint": null,
+        "notes": "Independent public test data; not a benchmark answer."
+      },
+      "created_at": null
+    },
+    "candidate": {
+      "schema_version": "2.1",
+      "candidate_id": "synthetic-r4-candidate-001",
+      "task_id": "synthetic-r4-task-001",
+      "case_id": "SYNTHETIC-R4-REGISTRY-001",
+      "name": "Synthetic read-only candidate",
+      "approach_type": "FIXED_TOOL_WORKFLOW",
+      "summary": "Public artificial test, not a real model comparison.",
+      "model_provider": null,
+      "model_name": null,
+      "tools": [
+        "retrieve_context"
+      ],
+      "assumptions": [],
+      "expected_strengths": [],
+      "expected_risks": [],
+      "estimated": null,
+      "metadata": {
+        "source_dataset": "SYNTHETIC_DEMO_DATA",
+        "source_ref": "SYNTHETIC-R4-REGISTRY-001",
+        "platform_hint": null,
+        "notes": "Independent public test data; not a benchmark answer."
+      }
+    },
+    "experiment_spec": {
+      "schema_version": "2.1",
+      "experiment_id": "synthetic-r4-experiment-001",
+      "task_id": "synthetic-r4-task-001",
+      "case_id": "SYNTHETIC-R4-REGISTRY-001",
+      "candidate_id": "synthetic-r4-candidate-001",
+      "execution_mode": "FIXTURE",
+      "objective": "Validate public contract enforcement using artificial input.",
+      "success_criteria": {
+        "min_quality_score": 0.5,
+        "max_latency_ms": null,
+        "max_cost": null,
+        "cost_currency": "CNY",
+        "require_tool_trace": true,
+        "require_evidence": true,
+        "max_error_count": 0
+      },
+      "required_tools": [
+        "retrieve_context"
+      ],
+      "prohibited_tools": [
+        "write_resource"
+      ],
+      "simulation": {
+        "profile": "NORMAL_SUCCESS",
+        "seed": 7
+      },
+      "business_constraints": {},
+      "repeats": 1,
+      "created_at": null
+    },
+    "run_context": {
+      "mode": "BENCHMARK"
+    }
+  }
+}

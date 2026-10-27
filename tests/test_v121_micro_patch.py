@@ -117,6 +117,7 @@ def test_task_require_evidence_overrides_experiment_and_contract_false():
     assert evaluate(w, c, b["experiment_spec"], b["task"])["evidence"]["status"] == "INSUFFICIENT"
 
 
+@pytest.mark.requires_restricted_registry
 def test_benchmark_gold_evidence_requirement_survives():
     b = bundle(); b["experiment_spec"]["success_criteria"]["require_evidence"] = False
     b["task"]["safety_constraints"]["require_evidence_for_dynamic_claims"] = False
@@ -247,6 +248,6 @@ def test_contract_field_usage_audit_has_no_unconsumed_decision_fields():
 
 
 def test_single_worker_is_documented():
-    for fn in ("README.md", "HANDOFF_TO_CODEX.md", "CODEX_LAST_MILE_PROMPT.md"):
+    for fn in ("README.md", "backend/README.md", "docs/REAL_TOOL_ARCHITECTURE.md"):
         text=(ROOT / fn).read_text(encoding="utf-8").lower()
         assert "--workers 1" in text and "single worker" in text

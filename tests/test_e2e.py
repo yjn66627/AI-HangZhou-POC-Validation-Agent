@@ -1,3 +1,4 @@
+import pytest
 import json
 from pathlib import Path
 
@@ -8,6 +9,7 @@ from experiment.pipeline import run_multi_candidate_pipeline
 ROOT=Path(__file__).resolve().parents[1]
 
 
+@pytest.mark.requires_restricted_registry
 def test_full_fixture_pipeline_five_cases():
     evals=[]
     for path in sorted((ROOT/'examples').glob('fx-*_bundle.json')):

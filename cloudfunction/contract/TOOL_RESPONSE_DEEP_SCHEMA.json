@@ -1,0 +1,475 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resource_kind",
+    "status",
+    "output",
+    "quality_metrics",
+    "latency",
+    "cost",
+    "token_usage",
+    "errors"
+  ],
+  "properties": {
+    "resource_kind": {
+      "const": "EXPERIMENT_RUN_RESULT_SNAPSHOT"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "SUCCESS",
+        "PARTIAL",
+        "FAILED",
+        "CANCELLED",
+        "TIMEOUT",
+        "BLOCKED"
+      ]
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "final_action",
+        "diagnosis_code",
+        "response",
+        "root_cause",
+        "confidence",
+        "handoff_type",
+        "guardrail_blocked",
+        "root_cause_evidence_refs",
+        "guardrail_triggered",
+        "checks"
+      ],
+      "properties": {
+        "final_action": {
+          "type": "string",
+          "enum": [
+            "ANSWER",
+            "CLARIFY",
+            "HANDOFF",
+            "REFUSE"
+          ]
+        },
+        "diagnosis_code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "response": {
+          "type": "string"
+        },
+        "root_cause": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH"
+          ]
+        },
+        "handoff_type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "POLICY",
+            "RUNTIME",
+            "QUALITY",
+            "EVIDENCE",
+            null
+          ]
+        },
+        "guardrail_blocked": {
+          "type": "boolean"
+        },
+        "root_cause_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "guardrail_triggered": {
+          "type": "boolean"
+        },
+        "checks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "boolean",
+              "number",
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "quality_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_reported_task_success",
+        "candidate_reported_score",
+        "metric_breakdown"
+      ],
+      "properties": {
+        "candidate_reported_task_success": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "candidate_reported_score": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "metric_breakdown": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "latency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_ms",
+        "model_ms",
+        "tool_ms",
+        "queue_ms"
+      ],
+      "properties": {
+        "total_ms": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "model_ms": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "tool_ms": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "queue_ms": {
+          "$ref": "#/$defs/numberMetric"
+        }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "currency_availability",
+        "total",
+        "model",
+        "tool",
+        "other"
+      ],
+      "properties": {
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "currency_availability": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "NOT_PROVIDED",
+            "NOT_APPLICABLE",
+            "ESTIMATED"
+          ]
+        },
+        "total": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "model": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "tool": {
+          "$ref": "#/$defs/numberMetric"
+        },
+        "other": {
+          "$ref": "#/$defs/numberMetric"
+        }
+      }
+    },
+    "token_usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "total_tokens",
+        "cache_hit_tokens",
+        "cache_miss_tokens"
+      ],
+      "properties": {
+        "input_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        },
+        "output_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        },
+        "total_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        },
+        "cache_hit_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        },
+        "cache_miss_tokens": {
+          "$ref": "#/$defs/integerMetric"
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message",
+          "source",
+          "retriable"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "BACKEND",
+              "TOOL",
+              "RUNTIME",
+              "POLICY",
+              "ADAPTER",
+              "EXECUTOR"
+            ]
+          },
+          "retriable": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "numberMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "availability",
+        "source",
+        "note"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "availability": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "NOT_PROVIDED",
+            "NOT_APPLICABLE",
+            "ESTIMATED"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "AVAILABLE",
+                  "ESTIMATED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "NOT_PROVIDED",
+                  "NOT_APPLICABLE"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "ESTIMATED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "note": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "integerMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "availability",
+        "source",
+        "note"
+      ],
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "availability": {
+          "type": "string",
+          "enum": [
+            "AVAILABLE",
+            "NOT_PROVIDED",
+            "NOT_APPLICABLE",
+            "ESTIMATED"
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "AVAILABLE",
+                  "ESTIMATED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "enum": [
+                  "NOT_PROVIDED",
+                  "NOT_APPLICABLE"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "const": "ESTIMATED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "note": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

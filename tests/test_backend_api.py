@@ -1,3 +1,4 @@
+import pytest
 import json
 import time
 from pathlib import Path
@@ -48,6 +49,7 @@ def test_server_without_api_key_is_misconfigured(monkeypatch):
     assert r.status_code==503
 
 
+@pytest.mark.requires_restricted_registry
 def test_post_then_get_returns_full_chain(api_headers):
     RUN_STORE.clear(); created=client.post('/api/v1/runs',json=load(),headers=api_headers)
     assert created.status_code==202
@@ -62,6 +64,7 @@ def test_post_then_get_returns_full_chain(api_headers):
     assert seen[0] in {'QUEUED','RUNNING','COMPLETED'}
 
 
+@pytest.mark.requires_restricted_registry
 def test_live_disabled_by_config_becomes_failed(api_headers):
     payload=load(); payload['run_context']={'mode':'BENCHMARK'}
     payload['experiment_spec']['execution_mode']='LIVE'; payload['experiment_spec']['simulation']['profile']=None
@@ -72,6 +75,7 @@ def test_live_disabled_by_config_becomes_failed(api_headers):
     assert 'disabled' in got['error']['message']
 
 
+@pytest.mark.requires_restricted_registry
 def test_multi_candidate_api(three_candidate_payload,api_headers):
     RUN_STORE.clear(); payload={**three_candidate_payload,'run_context':{'mode':'BENCHMARK'}}
     r=client.post('/api/v1/runs',json=payload,headers=api_headers)

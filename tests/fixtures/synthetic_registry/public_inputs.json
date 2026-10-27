@@ -1,0 +1,20 @@
+{
+  "data_origin": "SYNTHETIC_DEMO_DATA",
+  "cases": [
+    {
+      "case_id": "SYNTHETIC-R4-REGISTRY-001",
+      "user_query": "SYNTHETIC_DEMO_DATA: ask a clarifying question about a fictional sample. No enterprise experiment is measured.",
+      "known_context": {
+        "data_origin": "SYNTHETIC_DEMO_DATA",
+        "fictional_topic": "Example Workshop"
+      },
+      "allowed_tools": [
+        "retrieve_context"
+      ],
+      "available_docs": [
+        "synthetic-doc-001"
+      ],
+      "usage": "SYNTHETIC_DEMO_DATA"
+    }
+  ]
+}

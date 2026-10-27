@@ -1,0 +1,118 @@
+{
+  "enterprise_requirement": {
+    "case_id": "LIVE-DEMO",
+    "task_id": "task-live-demo",
+    "description": "示例企业AI POC需求",
+    "visible_context": {},
+    "available_tools": [
+      "tool_a"
+    ],
+    "safety_constraints": {
+      "allow_write_operations": false,
+      "require_evidence_for_dynamic_claims": true,
+      "prohibited_operations": [
+        "unauthorized_write"
+      ]
+    }
+  },
+  "candidates": [
+    {
+      "candidate_id": "cand-1",
+      "name": "固定工具工作流",
+      "approach_type": "FIXED_TOOL_WORKFLOW",
+      "summary": "示例候选",
+      "tools": [
+        "tool_a"
+      ],
+      "assumptions": [],
+      "expected_strengths": [
+        "稳定"
+      ],
+      "expected_risks": [
+        "工具失败"
+      ]
+    }
+  ],
+  "selected_candidate_id": "cand-1",
+  "experiment_params": {
+    "experiment_id": "exp-live-demo",
+    "execution_mode": "LIVE",
+    "objective": "验证候选",
+    "success_criteria": {
+      "min_quality_score": 0.8,
+      "max_latency_ms": 5000,
+      "max_cost": 0.5,
+      "cost_currency": "CNY",
+      "require_tool_trace": true,
+      "require_evidence": true,
+      "max_error_count": 0
+    },
+    "required_tools": [
+      "tool_a"
+    ],
+    "prohibited_tools": [
+      "unauthorized_write"
+    ],
+    "business_constraints": {}
+  },
+  "run_context": {
+    "mode": "LIVE_POC",
+    "comparison_rules": {
+      "minimum_pass_rate": 0.8,
+      "maximum_failure_rate": 0.2,
+      "minimum_evidence_sufficiency_rate": 0.8,
+      "allow_human_review": false
+    },
+    "live_acceptance_contract": {
+      "contract_id": "live-demo-contract",
+      "allowed_actions": [
+        "ANSWER",
+        "HANDOFF",
+        "REFUSE"
+      ],
+      "accepted_diagnoses": [],
+      "required_tools": [
+        "tool_a"
+      ],
+      "allowed_tools": [
+        "tool_a"
+      ],
+      "forbidden_tools": [
+        "unauthorized_write"
+      ],
+      "evidence_required": true,
+      "should_escalate": false,
+      "guardrail_required": false,
+      "root_cause_must_be_evidenced": true,
+      "required_response_keywords": [],
+      "required_checks": {},
+      "forbidden_claims": [],
+      "evidence_requirements": {
+        "required_types": [],
+        "required_claim_ids": [],
+        "required_targets": [
+          "LIVE-DEMO"
+        ],
+        "require_tool_link": true,
+        "require_action_result": true
+      },
+      "notes": "示例：运行前冻结；不是腾讯元器官方字段。",
+      "decision_criteria": {
+        "quality": {
+          "status": "REQUIRED",
+          "min_score": 0.8
+        },
+        "cost": {
+          "status": "REQUIRED",
+          "max_value": 0.5,
+          "currency": "CNY"
+        },
+        "latency": {
+          "status": "REQUIRED",
+          "max_ms": 5000
+        },
+        "source": "BUSINESS_CONFIRMED"
+      }
+    }
+  }
+}

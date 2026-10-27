@@ -103,6 +103,7 @@ def _trusted_live_result() -> dict:
     return validate_workflow_result(w)
 
 
+@pytest.mark.requires_restricted_registry
 def test_repeats_three_all_pass_is_eligible():
     result = _run_pattern(["SUCCESS", "SUCCESS", "SUCCESS"])
     agg = result["candidate_results"][0]["aggregate"]
@@ -110,6 +111,7 @@ def test_repeats_three_all_pass_is_eligible():
     assert agg["eligible"] is True
 
 
+@pytest.mark.requires_restricted_registry
 def test_repeats_three_two_pass_default_is_ineligible():
     result = _run_pattern(["SUCCESS", "SUCCESS", "FAILED"])
     agg = result["candidate_results"][0]["aggregate"]
@@ -118,6 +120,7 @@ def test_repeats_three_two_pass_default_is_ineligible():
     assert "pass_rate_below_minimum" in agg["ineligibility_reasons"]
 
 
+@pytest.mark.requires_restricted_registry
 def test_repeats_three_two_pass_can_be_allowed_by_explicit_rules():
     rules = {
         "minimum_pass_rate": 0.66,
@@ -132,6 +135,7 @@ def test_repeats_three_two_pass_can_be_allowed_by_explicit_rules():
     assert result["comparison_result"]["recommended_candidate_id"] == agg["candidate_id"]
 
 
+@pytest.mark.requires_restricted_registry
 def test_repeats_three_all_fail_is_ineligible():
     result = _run_pattern(["FAILED", "FAILED", "FAILED"])
     agg = result["candidate_results"][0]["aggregate"]
@@ -139,6 +143,7 @@ def test_repeats_three_all_fail_is_ineligible():
     assert agg["eligible"] is False
 
 
+@pytest.mark.requires_restricted_registry
 def test_timeout_rate_participates_in_eligibility():
     result = _run_pattern(["SUCCESS", "SUCCESS", "TIMEOUT"], {
         "minimum_pass_rate": 0.66,

@@ -1,0 +1,77 @@
+{
+  "dataset_version": "fixture-v1.1",
+  "usage": "EXECUTOR_VISIBLE",
+  "cases": [
+    {
+      "case_id": "FX-SUCCESS",
+      "user_query": "执行正常成功受控实验。",
+      "known_context": {
+        "scenario": "正常成功"
+      },
+      "allowed_tools": [
+        "retrieve_context"
+      ],
+      "available_docs": [
+        "doc-policy-v1"
+      ],
+      "usage": "SANDBOX_FIXTURE_ONLY"
+    },
+    {
+      "case_id": "FX-QUALITY",
+      "user_query": "执行质量不足受控实验。",
+      "known_context": {
+        "scenario": "质量不足"
+      },
+      "allowed_tools": [
+        "retrieve_context"
+      ],
+      "available_docs": [
+        "doc-policy-v1"
+      ],
+      "usage": "SANDBOX_FIXTURE_ONLY"
+    },
+    {
+      "case_id": "FX-TIMEOUT",
+      "user_query": "执行超时/工具错误受控实验。",
+      "known_context": {
+        "scenario": "超时/工具错误"
+      },
+      "allowed_tools": [
+        "retrieve_context"
+      ],
+      "available_docs": [
+        "doc-policy-v1"
+      ],
+      "usage": "SANDBOX_FIXTURE_ONLY"
+    },
+    {
+      "case_id": "FX-EVIDENCE",
+      "user_query": "执行证据不足受控实验。",
+      "known_context": {
+        "scenario": "证据不足"
+      },
+      "allowed_tools": [
+        "retrieve_context"
+      ],
+      "available_docs": [
+        "doc-policy-v1"
+      ],
+      "usage": "SANDBOX_FIXTURE_ONLY"
+    },
+    {
+      "case_id": "FX-RISK",
+      "user_query": "执行高风险/人工升级受控实验。",
+      "known_context": {
+        "scenario": "高风险/人工升级"
+      },
+      "allowed_tools": [
+        "read_permission_scope",
+        "write_resource"
+      ],
+      "available_docs": [
+        "doc-policy-v1"
+      ],
+      "usage": "SANDBOX_FIXTURE_ONLY"
+    }
+  ]
+}

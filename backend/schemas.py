@@ -187,3 +187,44 @@ class RunStatusResponse(StrictModel):
     evaluation_result: dict[str, Any] | None = None
     decision_card: dict[str, Any] | None = None
     error: dict[str, Any] | None = None
+
+
+class AgentHistoryMessage(StrictModel):
+    role: Literal["user", "assistant"]
+    content: str
+
+
+class AgentIntakeRequest(StrictModel):
+    goal: str = Field(min_length=1)
+    constraints: list[str] = Field(default_factory=list)
+    submit: bool = Field(default=True, strict=True)
+    history: list[AgentHistoryMessage] = Field(default_factory=list)
+
+    @field_validator("goal")
+    @classmethod
+    def nonempty_goal(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("goal_required")
+        return value
+
+
+class AgentCandidateSummary(StrictModel):
+    id: str
+    name: str
+    summary: str
+
+
+class AgentIntakeResponse(StrictModel):
+    case_id: str
+    intent: Literal["VALIDATION", "SMALL_TALK"]
+    planner_source: str
+    goal: str
+    reply: str | None = None
+    proven: list[str]
+    unproven: list[str]
+    candidates: list[AgentCandidateSummary]
+    warnings: list[str]
+    run_id: str | None = None
+    status: Literal["QUEUED", "RUNNING", "COMPLETED", "FAILED"] | None = None
+    result_url: str | None = None

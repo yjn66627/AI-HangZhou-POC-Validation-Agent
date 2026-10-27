@@ -21,7 +21,8 @@ from experiment.executor_base import (
 from experiment.pipeline import run_multi_candidate_pipeline
 from .adapters.yuanqi import YuanqiMappingError, prepare_run_requests
 from .live_executor import ExternalApiLiveExecutor, PassthroughWorkflowResultAdapter, YuanqiLiveExecutor
-from .schemas import RunAccepted, RunRequest, RunStatusResponse
+from .schemas import AgentIntakeRequest, AgentIntakeResponse, RunAccepted, RunRequest, RunStatusResponse
+from .agent.service import handle_message, intake_public_view
 
 app = FastAPI(title="AI POC实验执行后端", version="1.2.3")
 RUN_STORE: dict[str, dict[str, Any]] = {}
@@ -190,3 +191,31 @@ def get_run(run_id: str) -> RunStatusResponse:
     if not result:
         raise HTTPException(status_code=404, detail="run_not_found")
     return RunStatusResponse(**result)
+
+
+@app.post("/api/v1/agent/intake", response_model=AgentIntakeResponse, dependencies=[Depends(require_api_key)])
+def create_agent_intake(request: AgentIntakeRequest) -> AgentIntakeResponse:
+    """Reuse the existing planner and the authenticated run-submission pipeline."""
+    try:
+        plan = handle_message(
+            request.goal,
+            request.constraints,
+            [message.model_dump() for message in request.history],
+        )
+        if plan.get("intent") == "SMALL_TALK":
+            return AgentIntakeResponse(**plan)
+
+        view = intake_public_view(plan)
+        if not request.submit:
+            return AgentIntakeResponse(**view)
+
+        run_request = RunRequest.model_validate({
+            "task": plan["task"],
+            "candidates": plan["candidates"],
+            "experiment_specs": plan["experiment_specs"],
+            "run_context": plan["run_context"],
+        })
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail="agent_intake_invalid") from exc
+    accepted = _submit_run(run_request)
+    return AgentIntakeResponse(**view, **accepted.model_dump())

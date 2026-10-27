@@ -228,6 +228,7 @@ class SequenceExecutor(ExperimentExecutor):
         return w
 
 
+@pytest.mark.requires_restricted_registry
 def test_repeats_three_one_of_three_pass_is_not_eligible():
     b=deepcopy(bundle()); b["experiment_spec"]["repeats"]=3
     result=run_multi_candidate_pipeline(b["task"],[b["candidate"]],[b["experiment_spec"]],registry=CaseRegistry(),master_run_id="one-third",executor=SequenceExecutor())
@@ -247,6 +248,7 @@ def test_multi_candidate_different_thresholds_rejected(three_candidate_payload):
 
 
 # 15 Gold Acceptance Criteria编译并执行
+@pytest.mark.requires_restricted_registry
 def test_formal_acceptance_criteria_compiled_and_executed():
     registry=CaseRegistry(); contract=registry.build_evaluation_contract("TEST-R2")
     assert contract["required_checks"]["reproducible_probe"] is True
@@ -294,6 +296,7 @@ def test_template_experiment_id_and_required_tools_are_read():
 
 
 # 21-23 异步提交状态机
+@pytest.mark.requires_restricted_registry
 def test_post_returns_202_quickly_and_status_progresses(monkeypatch):
     import backend.app as appmod
     hdr=headers(monkeypatch); RUN_STORE.clear(); original=appmod.run_multi_candidate_pipeline
@@ -306,6 +309,7 @@ def test_post_returns_202_quickly_and_status_progresses(monkeypatch):
     done,seen=poll(r.json()["result_url"],hdr); assert done["status"]=="COMPLETED" and any(x in {"QUEUED","RUNNING"} for x in seen+[first["status"]])
 
 
+@pytest.mark.requires_restricted_registry
 def test_async_failure_becomes_failed(monkeypatch):
     import backend.app as appmod
     hdr=headers(monkeypatch); RUN_STORE.clear()
@@ -317,6 +321,7 @@ def test_async_failure_becomes_failed(monkeypatch):
 
 
 # 24-25 Benchmark/LIVE contract source separation
+@pytest.mark.requires_restricted_registry
 def test_benchmark_and_live_contract_sources_are_separate(monkeypatch):
     hdr=headers(monkeypatch); RUN_STORE.clear(); b=bundle()
     rb=client.post("/api/v1/runs",json={"task":b["task"],"candidate":b["candidate"],"experiment_spec":b["experiment_spec"],"run_context":{"mode":"BENCHMARK"}},headers=hdr)

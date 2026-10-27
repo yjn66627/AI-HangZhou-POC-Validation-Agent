@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 from experiment.case_registry import CaseRegistry
 from experiment.experiment_runner import FixtureExecutor, build_fixture_result
@@ -15,6 +16,7 @@ class SpyExecutor(FixtureExecutor):
         return build_fixture_result(task,candidate,experiment_spec,run_id)
 
 
+@pytest.mark.requires_restricted_registry
 def test_registry_separates_public_and_private():
     r=CaseRegistry()
     public=r.get_public_input('FX-SUCCESS'); private=r.get_private_gold('FX-SUCCESS')
@@ -22,6 +24,7 @@ def test_registry_separates_public_and_private():
     assert 'expected' in private
 
 
+@pytest.mark.requires_restricted_registry
 def test_private_gold_never_enters_executor(success_bundle):
     spy=SpyExecutor(); registry=CaseRegistry()
     out=run_candidate_pipeline(success_bundle['task'],success_bundle['candidate'],success_bundle['experiment_spec'],registry=registry,master_run_id='gold-leak',executor=spy)

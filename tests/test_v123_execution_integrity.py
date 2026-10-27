@@ -187,6 +187,7 @@ class UnauthorizedExecutor(ExperimentExecutor):
         return w
 
 
+@pytest.mark.requires_restricted_registry
 def test_execution_violation_candidate_not_recommended_by_comparison(success_bundle):
     b = deepcopy(success_bundle)
     b["task"]["available_tools"] = ["retrieve_context", "shadow_tool"]
@@ -229,6 +230,7 @@ def test_fixture_source_valid_but_undeclared_tool_still_fails(success_bundle):
     assert e["execution_plan_integrity"]["status"] == "FAIL"
 
 
+@pytest.mark.requires_restricted_registry
 def test_one_unauthorized_repeat_is_hard_comparison_gate(success_bundle):
     b = deepcopy(success_bundle)
     b["task"]["available_tools"] = ["retrieve_context", "shadow_tool"]

@@ -2,7 +2,7 @@
 
 `POST /api/v1/yuanqi/runs` 已真实调用 `prepare_run_requests()`，腾讯元器前半段无需自行拼内部复杂Schema。
 
-默认模板仍标记 `TEMPLATE_NOT_LIVE_VERIFIED`，**不代表腾讯元器官方JSON格式**。真实字段必须由Codex拿到脱敏真实payload后校准。
+默认模板仍标记 `TEMPLATE_NOT_LIVE_VERIFIED`，**不代表腾讯元器官方JSON格式**。真实字段应由项目维护者依据已获授权且脱敏的响应样本校准。
 
 v1.2已实现：
 - 严格布尔解析：`"false"`→False；非法字符串报错；
