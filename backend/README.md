@@ -18,11 +18,14 @@ python -m uvicorn backend.app:app --host 127.0.0.1 --port 8000 --workers 1
 
 The loopback address is a replaceable local-development default. A deployment-specific endpoint must be configured outside this source snapshot.
 
+The in-memory RUN_STORE requires a single worker (`--workers 1`). Restarting the process loses stored run records; multiple workers do not share them.
+
 ## Main endpoints
 
 - `GET /health` — service health check.
 - `POST /api/v1/runs` — submit a structured validation run.
 - `POST /api/v1/yuanqi/runs` — submit a Yuanqi-adapter run.
 - `GET /api/v1/runs/{run_id}` — read run status and result data.
+- `POST /api/v1/agent/intake` — authenticated chat/preview/submission using the existing Agent service; submissions reuse the same run queue. Preview and small talk return no run ID. This local route has not been deployed to an online service.
 
 The source snapshot is intended for review and reproducible local inspection. It does not claim a production deployment or require any credential to be stored in the repository.

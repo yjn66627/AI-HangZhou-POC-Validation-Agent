@@ -1,63 +1,21 @@
-# AI POC 验证与技术决策智能体｜团队协作状态
+# 项目公开状态
 
-> 本文件是团队协作文档，不是 Formal Runtime Authority。
+更新日期：2026-10-26。此页记录公开源码和演示的适用范围，历史设计文档保留其原有日期与署名。
 
-## 当前正式基线
+## 2026 年 9 月比赛提交版
 
-`POST_C1D_PRE_REAL_TOOL_WINDOWS_BASELINE`
+包含团队前端控制台、Backend API、Executor Gateway、Tool Runtime、Case Registry、Schema、Evaluator、Decision Engine 和演示主页。受控 Fixture 链路和预置回放用于展示流程，不表示对任意企业数据进行实时测量。
 
-## 已完成
+## 赛后 P2 CloudBase 演示
 
-- POC 实验执行主链
-- Gateway / Runtime 基础
-- Multi-turn Tool Protocol
-- Tool-enabled Prompt Integration
-- Prompt Integration Windows Apply
-- Offline E2E
-- Backend POC 验证 Agent 收案入口（`POST /api/v1/agent/intake`，不下 Decision）
+腾讯元器通过 CloudBase HTTP Gateway 调用 Python HTTP 云函数，读取冻结响应。它不实时执行本地 Backend 或任意模型实验。仓库 `cloudfunction/` 提供兼容契约的公开复现实现，使用明确标记为 SYNTHETIC_DEMO_DATA 的虚构数据，不包含线上原始冻结响应或凭据。
 
-## 正在进行
+## 公开源码验证与限制
 
-- Project-native Real Tool Adapter
-- Hard network deadline
-- STAGING Real Tool integration
+- Agent intake 路由复用既有收案服务与运行链；本地回归通过不表示本次已部署到线上。
+- 公开安全测试、CloudFunction 契约和前端构建可在独立环境验证；具体命令见 [测试说明](docs/TESTING.md)。
+- 完整测试仍有 22 项需要受限评测资源，公开测试显式排除并报告数量；不补入私有答案、不把失败改成通过。
+- 任意企业数据接入、通用权限接入、任意模型实时比较及完整商业 SaaS 不属于当前已验证成果。
+- 当前仅公开展示，未统一授予通用开源许可；第三方依赖和既有素材分别保留其权利边界。
 
-## 尚未开始
-
-- Prompt production activation
-- Tencent Yuanqi real Tool integration
-- TEST-R3
-- Tool LIVE
-- RealApiAdapter / L0 真实运行角标
-- `SOURCE_PUBLICATION_REVIEW` 比赛封版
-
-## Demo 技术冻结
-
-- 状态：`DEMO_FREEZE_v1.0` **设计已定，产物待审**
-- 契约：[`docs/demo/DEMO_FREEZE.md`](docs/demo/DEMO_FREEZE.md)
-- 数据包：[`demo_cases/`](demo_cases/)
-- 脚本：[`demo_scripts/`](demo_scripts/)
-- 主演示 Case 固定为 `DEMO-S` / TEST-P1；TEST-R3 不得作为 3 分钟主线
-
-## 比赛交付 / 路演冻结
-
-- 状态：`DELIVERY_FREEZE_v1.0` **路演交付包已冻结**
-- 契约：[`docs/delivery/DELIVERY_FREEZE.md`](docs/delivery/DELIVERY_FREEZE.md)
-- 提交清单：[`docs/delivery/SUBMISSION.md`](docs/delivery/SUBMISSION.md)
-- 前端：[`frontend/`](frontend/) Mock/Replay 路演版，`npm run dev` → `http://127.0.0.1:5173`
-- 材料：[`presentation_assets/PITCH.md`](presentation_assets/PITCH.md)
-- **不是** Tool LIVE 完成，也不是生产封版。默认角标为预置回放，health 200 ≠ 真实运行。
-
-## 团队并行可进行
-
-- 脱敏截图入库（有内容再建 `public_artifacts/demo/`）
-- PPT 排版（文案已冻结，勿改 Decision 口径）
-- RealApiAdapter（不得把 Fixture 标成 LIVE）
-
-## 路线说明
-
-Dify 已退出最终 Production 路线。D1 Project-native Real Tool Adapter 仍处于独立开发 / 审查流程，本次同步不包含 D1 Candidate、临时代码或未审计产物。
-
-## 公开边界
-
-本仓库为 Public Repository。Private Gold、内部原始证据、真实凭据、未脱敏响应、浏览器会话数据和本机隐私信息不得进入仓库。
+现行分工见 [README 团队贡献](README.md)；许可与素材说明见 [权利边界](docs/RIGHTS_AND_LICENSING.md)。

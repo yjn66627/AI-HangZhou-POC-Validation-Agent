@@ -1,3 +1,4 @@
+import pytest
 from copy import deepcopy
 
 from experiment.case_registry import CaseRegistry
@@ -5,12 +6,14 @@ from experiment.pipeline import run_multi_candidate_pipeline
 from experiment.schemas import validate_comparison_result
 
 
+@pytest.mark.requires_restricted_registry
 def test_repeats_one(success_bundle):
     result=run_multi_candidate_pipeline(success_bundle['task'],[success_bundle['candidate']],[success_bundle['experiment_spec']],registry=CaseRegistry(),master_run_id='repeat1')
     c=result['candidate_results'][0]
     assert len(c['repeats'])==1 and c['aggregate']['repeat_count']==1
 
 
+@pytest.mark.requires_restricted_registry
 def test_repeats_three_aggregates(success_bundle):
     spec=deepcopy(success_bundle['experiment_spec']); spec['repeats']=3
     result=run_multi_candidate_pipeline(success_bundle['task'],[success_bundle['candidate']],[spec],registry=CaseRegistry(),master_run_id='repeat3')
@@ -21,6 +24,7 @@ def test_repeats_three_aggregates(success_bundle):
     assert agg['pass_rate']==1.0
 
 
+@pytest.mark.requires_restricted_registry
 def test_three_candidate_comparison(three_candidate_payload):
     p=three_candidate_payload
     result=run_multi_candidate_pipeline(p['task'],p['candidates'],p['experiment_specs'],registry=CaseRegistry(),master_run_id='multi')

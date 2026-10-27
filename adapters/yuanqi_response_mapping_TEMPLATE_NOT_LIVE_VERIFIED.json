@@ -37,5 +37,5 @@
     "timestamps.started_at": "",
     "timestamps.finished_at": ""
   },
-  "note": "占位符必须由Codex依据真实腾讯元器JSON替换。空的指标路径会映射为NOT_PROVIDED；不得填0冒充未知。"
+  "note": "占位符由项目维护者依据已获授权且脱敏的腾讯元器响应校准。空的指标路径会映射为NOT_PROVIDED；不得填0冒充未知。"
 }

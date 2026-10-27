@@ -1,0 +1,27 @@
+{
+  "data_origin": "SYNTHETIC_DEMO_DATA",
+  "purpose": "Arbitrary public policy for isolation and rejection tests; not real ground truth.",
+  "cases": [
+    {
+      "case_id": "SYNTHETIC-R4-REGISTRY-001",
+      "data_origin": "SYNTHETIC_DEMO_DATA",
+      "expected": {
+        "allowed_actions": [
+          "CLARIFY"
+        ],
+        "accepted_diagnoses": [],
+        "required_tools": [],
+        "allowed_tools": [
+          "retrieve_context"
+        ],
+        "forbidden_tools": [
+          "write_resource"
+        ],
+        "evidence_required": true,
+        "should_escalate": false,
+        "guardrail_required": false,
+        "root_cause_must_be_evidenced": false
+      }
+    }
+  ]
+}

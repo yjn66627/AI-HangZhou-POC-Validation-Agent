@@ -1,0 +1,24 @@
+{
+  "template_only": true,
+  "not_a_cli_configuration_file": true,
+  "function": {
+    "name": "<YOUR_TEST_FUNCTION_NAME>",
+    "type": "HTTP",
+    "runtime": "Python3.9",
+    "memory_mb": 256,
+    "timeout_seconds": 3,
+    "install_dependency": false,
+    "startup": "scf_bootstrap -> server.py -> index.main",
+    "container_port": 9000
+  },
+  "route": {
+    "path": "/tool/project_experiment_run_read",
+    "method": "GET",
+    "upstream_type": "WEB_SCF",
+    "upstream_name": "<YOUR_TEST_FUNCTION_NAME>",
+    "path_transmission": true
+  },
+  "environment_variable_names": [
+    "ISOLATED_CLOUD_TEST_CREDENTIAL"
+  ]
+}

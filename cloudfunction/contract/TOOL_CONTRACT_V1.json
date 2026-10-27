@@ -1,0 +1,171 @@
+{
+  "contract_id": "TOOL_CONTRACT_V1",
+  "version": "1.0",
+  "parity_rule": "Future CloudBase implementations MUST preserve this external contract; internal topology may change.",
+  "external_endpoint": {
+    "path": "/tool/project_experiment_run_read",
+    "method": "GET",
+    "query": {},
+    "body": null,
+    "redirects": "not part of the contract; internal adapter rejects redirects"
+  },
+  "authentication": {
+    "header": "Authorization",
+    "format": "Bearer <credential>",
+    "credential_source": "secret-injected runtime environment only",
+    "missing_or_invalid_status": 401,
+    "plaintext_in_design_artifacts": false
+  },
+  "request": {
+    "arguments": {},
+    "model_supplied_run_id": false,
+    "target_run_id": "server-side binding / environment-owned fixed run_id",
+    "extra_query_parameters": "reject with HTTP 400",
+    "extra_body": "not used; request body must remain empty/null for parity"
+  },
+  "status_codes": {
+    "200_success": {
+      "meaning": "Tool envelope returned; status=SUCCESS and data is projected result"
+    },
+    "200_tool_error": {
+      "meaning": "Tool envelope returned; status=ERROR and data=null for downstream-visible runtime/adapter errors"
+    },
+    "400": {
+      "meaning": "non-empty query violates zero-parameter contract",
+      "payload": {
+        "detail": "zero_parameter_contract_requires_empty_query"
+      }
+    },
+    "401": {
+      "meaning": "missing or invalid external Bearer credential",
+      "payload": {
+        "detail": "invalid_task_owned_test_credential"
+      }
+    }
+  },
+  "success_payload": {
+    "type": "object",
+    "required": [
+      "status",
+      "tool",
+      "arguments",
+      "data",
+      "error",
+      "latency_ms",
+      "source"
+    ],
+    "properties": {
+      "status": {
+        "const": "SUCCESS",
+        "type": "string"
+      },
+      "tool": {
+        "const": "实验运行结果读取",
+        "type": "string"
+      },
+      "arguments": {
+        "type": "object",
+        "maxProperties": 0
+      },
+      "data": {
+        "type": "object",
+        "required": [
+          "resource_kind",
+          "status",
+          "output",
+          "quality_metrics",
+          "latency",
+          "cost",
+          "token_usage",
+          "errors"
+        ]
+      },
+      "error": {
+        "type": [
+          "null",
+          "object"
+        ]
+      },
+      "latency_ms": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "source": {
+        "const": "PROJECT_BACKEND_RUN_STORE",
+        "type": "string"
+      }
+    }
+  },
+  "error_payload": {
+    "type": "object",
+    "required": [
+      "status",
+      "tool",
+      "arguments",
+      "data",
+      "error",
+      "latency_ms",
+      "source"
+    ],
+    "invariants": {
+      "status": "ERROR",
+      "data": null,
+      "arguments": {},
+      "error": "object or null",
+      "http_status_for_tool_level_errors": 200
+    }
+  },
+  "data_projection": {
+    "resource_kind": "EXPERIMENT_RUN_RESULT_SNAPSHOT",
+    "visible_fields": [
+      "status",
+      "output",
+      "quality_metrics",
+      "latency",
+      "cost",
+      "token_usage",
+      "errors"
+    ],
+    "hidden_fields": "all raw Backend fields not in the explicit whitelist",
+    "result_field_type": "object on SUCCESS; null on ERROR"
+  },
+  "tencent_dependencies": [
+    "HTTP 200/JSON envelope",
+    "status",
+    "data",
+    "data.status",
+    "data.output",
+    "data.quality_metrics",
+    "data.latency",
+    "data.cost",
+    "data.token_usage",
+    "data.errors"
+  ],
+  "non_dependencies": [
+    "model-supplied run_id",
+    "request body",
+    "query parameters",
+    "raw Backend fields outside whitelist",
+    "local filesystem paths",
+    "Windows-only launcher behavior"
+  ],
+  "legacy_backend_adapter_contract": {
+    "method": "GET",
+    "path_template": "/api/v1/runs/{run_id}",
+    "authorization": "Bearer API_KEY",
+    "query": {},
+    "body": null,
+    "retry": 0,
+    "redirect_follow": false,
+    "timeout_ms": 10000,
+    "total_tool_budget_ms": 20000,
+    "max_adapter_response_bytes": 131072
+  },
+  "implementation": {
+    "mode": "SYNTHETIC_DEMO_DATA",
+    "response_fixture": "function/fixtures/synthetic_demo_success.json",
+    "outbound_network": false,
+    "legacy_source_label_note": "The source label is retained for response compatibility; this function does not call a Backend run store.",
+    "request_body_note": "Clients must send no body. The inherited handler ignores a supplied body; it does not validate body emptiness."
+  }
+}

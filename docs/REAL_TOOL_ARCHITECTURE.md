@@ -1,24 +1,17 @@
-# Real Tool Architecture Reference
+# Tool 与实验执行架构
 
-> 本文件是团队架构参考资料，不代表 Real Tool 已上线或已完成生产激活。
+实验执行链负责运行候选并产出结构化结果；Tool 读取链负责在明确权限下读取结果。两者的能力和验证结论不能相互替代。
 
-## 两条链路必须分离
+## 比赛提交版
 
-- **Chain A：POC Experiment Execution**：执行实验并产生结构化运行结果。
-- **Chain B：Executor Agent Tool Runtime**：由 Executor Agent 通过 Tool Protocol 读取或操作运行时资源。
+历史本机演示链为：腾讯元器公网 Tool → Bridge / Backend → 受控实验结果。仓库中的 `GET /api/v1/runs/{run_id}` 读取 Backend 进程内记录；它要求稳定的单 worker（single worker）affinity，并未提供跨进程共享存储。启动时使用 `uvicorn backend.app:app --host 127.0.0.1 --port 8000 --workers 1`。
 
-两条链路的职责、权限和验证结论需要分别维护，不能把 Tool Runtime 的候选实现当成实验执行链的正式替换。
+`executor_gateway/` 中还包含实验执行适配器及 Tool Runtime。代码存在、离线测试通过或接口返回 200，都不意味着任意企业数据的 LIVE 执行已完成。
 
-## 首个 Real Tool 方向
+## 赛后 P2 CloudBase
 
-首个 Real Tool 面向实验运行结果读取：
+读取演示链为：腾讯元器 → CloudBase HTTP Gateway → Python HTTP 云函数 → 冻结 Fixture 响应。该函数不实时读取本机 RUN_STORE、不调用 Evaluator/Decision Engine，也不执行远端模型实验。
 
-```text
-GET /api/v1/runs/{run_id}
-```
+公开候选 `cloudfunction/` 保持请求与响应契约，数据改用独立构造的 SYNTHETIC_DEMO_DATA。handler 仅有 fixture 文件名调整；HTTP 启动还需要 `server.py` 与 `scf_bootstrap`。部署说明不包含真实资源标识、域名或凭据。
 
-当前 Run Store 为 process-local memory，因此部署时需要 single-worker affinity，直到持久化或共享存储方案另行完成并验证。
-
-## 当前状态
-
-D0 Real Tool Architecture 与 D0W Resource Fact Check 可作为架构参考。Project-native Real Tool Adapter（D1）仍需独立完成 Controller Review、审计和 Windows Apply；本次团队同步不包含 D1 Candidate 实现、临时代码或其证据包。
+本机链与云端读取链可以分别测试；不能将合成 Fixture 的成功响应解释为动态企业 POC 的测量成功。

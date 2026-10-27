@@ -1,5 +1,9 @@
 # 比赛交付冻结｜DELIVERY FREEZE
 
+
+> 历史材料说明：本文件首次进入仓库的日期为 2026-09-17，记录当时的分工与设计范围。下文原有署名和角色表述予以保留，不代表目前的职责安排，也不构成版权转让或开源授权。现行团队贡献请以 [项目 README](../../README.md) 的 Contributors / 团队贡献为准；当前技术能力与公开限制亦以 README 为准。
+
+
 > 版本：`DELIVERY_FREEZE_v1.0`
 > 状态：路演交付包已冻结；不是 Tool LIVE 完成，也不是 `SOURCE_PUBLICATION_REVIEW`
 > 钉死上游：`DEMO_FREEZE_v1.0` + `UI_FREEZE_v1.0`

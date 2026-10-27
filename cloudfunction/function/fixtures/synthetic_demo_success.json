@@ -1,0 +1,122 @@
+{
+  "resource_kind": "EXPERIMENT_RUN_RESULT_SNAPSHOT",
+  "status": "SUCCESS",
+  "output": {
+    "final_action": "ANSWER",
+    "diagnosis_code": "SYNTHETIC_DEMO_DATA",
+    "response": "SYNTHETIC_DEMO_DATA: Fictional sample output. No enterprise POC was executed.",
+    "root_cause": null,
+    "confidence": "LOW",
+    "handoff_type": null,
+    "guardrail_blocked": false,
+    "root_cause_evidence_refs": [
+      "synthetic-demo://experiment-0001/example-output"
+    ],
+    "guardrail_triggered": false,
+    "checks": {
+      "data_origin": "SYNTHETIC_DEMO_DATA",
+      "fictional_experiment_id": "synthetic-experiment-0001",
+      "fictional_business_name": "Fictional Example Workshop",
+      "real_experiment_executed": false
+    }
+  },
+  "quality_metrics": {
+    "candidate_reported_task_success": null,
+    "candidate_reported_score": {
+      "value": 0.42,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "metric_breakdown": {
+      "synthetic_example_only": 0.42
+    }
+  },
+  "latency": {
+    "total_ms": {
+      "value": 123.0,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "model_ms": {
+      "value": 75.0,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "tool_ms": {
+      "value": 0.0,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "queue_ms": {
+      "value": 48.0,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    }
+  },
+  "cost": {
+    "currency": "USD",
+    "currency_availability": "ESTIMATED",
+    "total": {
+      "value": 0.003,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "model": {
+      "value": 0.002,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "tool": {
+      "value": 0.0,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "other": {
+      "value": 0.001,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    }
+  },
+  "token_usage": {
+    "input_tokens": {
+      "value": 11,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "output_tokens": {
+      "value": 7,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "total_tokens": {
+      "value": 18,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "cache_hit_tokens": {
+      "value": 0,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    },
+    "cache_miss_tokens": {
+      "value": 11,
+      "availability": "ESTIMATED",
+      "source": "SYNTHETIC_DEMO_DATA",
+      "note": "Invented documentation example; not an experimental measurement."
+    }
+  },
+  "errors": []
+}
