@@ -15,12 +15,11 @@
 | P2 CloudBase | 经鉴权的零参数读取 Tool 与稳定 JSON envelope | 云端演示使用冻结数据；公开示例是合成数据 |
 | 尚未完成 | 任意企业数据接入、任意模型实时对比、通用数据/权限接入及完整商业 SaaS | 不在当前已验证能力范围内 |
 
-## 在线展示
+## 演示视频
 
-- 演示主页：[https://just-wxtx.upma.site/](https://just-wxtx.upma.site/)
-- 腾讯元器体验：[打开体验](https://yuanqi.tencent.com/webim/#/chat/rPLdMX?appid=2097996104859300096&experience=true&space_id=spm0Lq34zNykEjAFYKI2s3c9MAyrJHkC)
+[观看项目运行录屏（约 38 秒）](https://just-wxtx.upma.page/assets/demo.mp4) · [从 GitHub 查看或下载视频](demo-site/assets/demo.mp4)
 
-以上是项目展示入口；源码测试不会访问这些服务，也不能据此证明一次新的端到端实验成功。
+录屏展示了项目在腾讯元器上的历史运行过程，使用受控实验数据（Fixture）。原在线对话服务已于 2026 年 11 月 9 日停止。
 
 ## Contributors / 团队贡献
 
